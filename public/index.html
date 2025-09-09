@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartiFI | Banasthali WiFi</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fb;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Top Thin Nav */
+    .top-nav {
+      background: #004080;
+      height: 35px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0 20px;
+    }
+    .top-nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .top-nav a:hover { text-decoration: underline; }
+
+    .banner {
+      width: 100%;
+      height: 100px;
+      background: url("campus2.jpg") no-repeat center/cover;
+      border-bottom: 3px solid #004080;
+    }
+
+    .separator { background: #004080; height: 4px; }
+
+    /* Hero Section */
+    .hero-banner {
+      position: relative;
+      width: 100%;
+      height: 85vh;
+      background: url("bg.jpg") no-repeat center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-banner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      animation: zoomBg 20s ease-in-out infinite alternate;
+    }
+    @keyframes zoomBg { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+
+    .hero-text-box {
+      position: relative;
+      text-align: center;
+      color: white;
+      z-index: 2;
+      animation: fadeInUp 1.5s ease forwards;
+    }
+
+    .hero-text-box h1 {
+      font-size: 3.5rem;
+      margin-bottom: 15px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      background: linear-gradient(90deg, #ffffff, #ffffff);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 4s linear infinite, fadeInDown 1.5s ease forwards;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+    }
+    @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+    .hero-text-box p { font-size: 1.3rem; max-width: 700px; margin: auto; line-height: 1.6; opacity: 0; animation: fadeInUp 2.5s ease forwards; animation-delay: 1s; }
+
+    @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(40px); } 100% { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInDown { 0% { opacity: 0; transform: translateY(-40px); } 100% { opacity: 1; transform: translateY(0); } }
+
+    /* Features Section */
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 60px; }
+    .feature-card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s, box-shadow 0.3s; }
+    .feature-card:hover { transform: translateY(-8px); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+    .feature-card h3 { color: #004080; margin-bottom: 10px; font-size: 1.3rem; }
+
+    /* Form Section */
+    .form-section { background: #eef3fa; padding: 60px 20px; text-align: center; }
+    .form-section h2 { margin-bottom: 25px; color: #004080; }
+    .form-section form {
+      max-width: 480px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .form-section input { padding: 12px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; }
+    .form-section button {
+      padding: 12px;
+      background: linear-gradient(90deg, #004080, #0059b3);
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .form-section button:hover { background: linear-gradient(90deg, #003366, #004d99); }
+
+    footer { background: #00264d; color: white; text-align: center; padding: 15px; font-size: 0.9rem; margin-top: 30px; }
+  </style>
+</head>
+<body>
+  <!-- Top Nav -->
+  <div class="top-nav">
+    <a href="#">Home</a>
+    <a href="#">Login</a>
+    <a href="#">Register</a>
+    <a href="#">Help Desk</a>
+  </div>
+
+  <!-- Banner -->
+  <div class="banner"></div>
+  <div class="separator"></div>
+
+  <!-- Hero Banner -->
+  <section class="hero-banner">
+    <div class="hero-text-box">
+      <h1>Welcome to SmartiFI</h1>
+      <p>Your one-stop portal for Banasthali WiFi registration, login, and device management.</p>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <div class="feature-card"><h3>📶 Easy Registration</h3><p>Register your devices with just a few clicks and get connected instantly.</p></div>
+    <div class="feature-card"><h3>🔒 Secure Login</h3><p>Enjoy safe and encrypted access with student-specific credentials.</p></div>
+    <div class="feature-card"><h3>🛠 Help Desk</h3><p>Facing issues? Our help desk is here 24/7 for all WiFi support needs.</p></div>
+  </section>
+
+  <!-- Registration Form -->
+  <section class="form-section">
+    <h2>WiFi Registration</h2>
+    <form>
+      <label for="studentId">Student ID</label>
+      <input type="text" id="studentId" placeholder="Enter your Banasthali ID">
+
+      <label for="macAddress">MAC Address</label>
+      <div style="display: flex; gap: 10px;">
+        <input type="text" id="macAddress" placeholder="Click Fetch Address" readonly>
+        <button type="button" onclick="fetchMac()">Fetch Address</button>
+      </div>
+
+      <button type="submit">Register</button>
+    </form>
+  </section>
+
+  <script>
+    // 🔗 Fetch MAC from backend (Node server running batch file)
+    async function fetchMac() {
+      try {
+        const response = await fetch("http://localhost:3000/get-mac");
+        const data = await response.json();
+        document.getElementById("macAddress").value = data.mac || "Error fetching";
+      } catch (err) {
+        alert("⚠️ Could not fetch MAC. Is backend running?");
+      }
+    }
+  </script>
+
+  <!-- Footer -->
+  <footer>&copy; 2025 SmartiFI | Developed for Banasthali University WiFi Digitalization</footer>
+</body>
+</html>
