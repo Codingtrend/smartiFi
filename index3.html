@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartiFI | Banasthali Vidyapith WiFi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles */
+        html, body { height: 100%; margin: 0; overflow-x: hidden; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; /* gray-50 */
+            color: #1f2937; /* gray-800 */
+            overscroll-behavior-y: none;
+        }
+        #app { display: flex; flex-direction: column; min-height: 100vh; }
+        main { flex-grow: 1; /* Main content area scrolls if needed - handled per section below */ }
+
+        /* Utility */
+        .hidden { display: none !important; }
+        .brand-gradient { background: linear-gradient(90deg, #3b82f6, #1d4ed8); } /* blue-500 to blue-700 */
+        .brand-gradient-text { background: linear-gradient(90deg, #3b82f6, #1d4ed8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Scrollbar general styling */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #e5e7eb; border-radius: 3px; } /* gray-200 */
+        ::-webkit-scrollbar-thumb { background: #9ca3af; border-radius: 3px; } /* gray-400 */
+        ::-webkit-scrollbar-thumb:hover { background: #6b7280; } /* gray-500 */
+
+        /* UI Elements */
+        .glassmorphism { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(229, 231, 235, 0.7); }
+        .dashboard-card { transition: all 0.2s ease-in-out; }
+        .dashboard-card:hover { transform: translateY(-4px); box-shadow: 0 6px 12px rgba(0,0,0,0.08); }
+        .sidebar-link-active { background-color: #4f46e5; color: white; } /* indigo-600 */
+        .plan-card { transition: all 0.2s ease-in-out; cursor: pointer; }
+        .plan-card-selected { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4); } /* blue-500 */
+        #chatbotWindow { transition: transform 0.2s ease-out, opacity 0.2s ease-out; }
+
+        /* Layout & Scrolling Fixes */
+        #informatoryPage, #authPage, #emailVerificationPage, #macAddressPage, #studentDetailsPage { min-height: calc(100vh - 80px - 6px); overflow-y: auto; }
+        #dashboardPage > .flex { height: calc(100vh - 80px - 6px); overflow: hidden; }
+        #sidebar { height: 100%; display: flex; flex-direction: column; }
+        #student-sidebar-nav { flex-grow: 1; overflow-y: auto; }
+        #dashboardPage .flex-1.flex.flex-col { height: 100%; overflow: hidden; }
+        #dashboardPage .content-scroll-area { flex-grow: 1; overflow-y: auto; }
+        body.no-scroll { overflow: hidden; }
+
+        /* Input focus styles */
+         input:focus, textarea:focus, select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); }
+         button:focus-visible, a:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); border-radius: 0.375rem; }
+        input[type="file"]::file-selector-button { margin-right: 0.75rem; padding-top: 0.375rem; padding-bottom: 0.375rem; padding-left: 0.75rem; padding-right: 0.75rem; border-radius: 0.375rem; border-width: 0px; font-size: 0.75rem; line-height: 1rem; font-weight: 600; background-color: #eff6ff; color: #2563eb; cursor: pointer; transition: background-color 0.15s ease-in-out; }
+        input[type="file"]::file-selector-button:hover { background-color: #dbeafe; }
+        /* Success message style */
+        .success-message { color: #059669; } /* green-600 */
+    </style>
+</head>
+<body class="text-gray-900">
+
+    <div id="app">
+
+        <!-- Header Banner -->
+        <div class="flex-shrink-0">
+             <a href="#" onclick="showPage('informatoryPage'); event.preventDefault();" class="cursor-pointer block">
+                 <img src="campus2.jpg" alt="Banasthali Vidyapith Banner" class="w-full h-20 object-cover shadow-sm block">
+             </a>
+        </div>
+        <div class="h-1.5 brand-gradient flex-shrink-0"></div>
+
+        <main>
+            <!-- Informatory Page -->
+            <section id="informatoryPage">
+                 <div class="relative text-center py-32 md:py-48 overflow-hidden bg-gray-800">
+                     <div class="absolute inset-0 bg-cover bg-center opacity-40 transform scale-110" style="background-image: url('bg.jpg');"></div>
+                    <div class="container mx-auto px-6 relative">
+                         <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4 fade-in-up" style="animation-delay: 0.1s;">Welcome to <span class="brand-gradient-text" style="background: linear-gradient(90deg, #60a5fa, #ffffff); -webkit-background-clip: text;">SmartiFI</span></h1>
+                         <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto mb-8 fade-in-up" style="animation-delay: 0.2s;">The official portal for Banasthali Vidyapith's digital WiFi network. Seamlessly manage your connection.</p>
+                         <div class="fade-in-up" style="animation-delay: 0.3s;">
+                             <button onclick="showPage('authPage')" class="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition-transform transform hover:scale-105 duration-200">
+                                 Get Connected
+                             </button>
+                         </div>
+                    </div>
+                 </div>
+                 <div class="py-16 md:py-20 bg-white">
+                     <div class="container mx-auto px-6">
+                         <div class="text-center mb-12 md:mb-16">
+                             <h2 class="text-3xl md:text-4xl font-bold text-gray-900">A Digital Campus Initiative</h2>
+                             <p class="text-gray-600 mt-3 max-w-2xl mx-auto">Our WiFi system is designed to support your academic journey. Please review the policies below.</p>
+                         </div>
+                         <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
+                             <!-- Policy Cards -->
+                             <div class="flex items-start space-x-4 p-5 rounded-lg border border-gray-200 hover:shadow-sm transition duration-200">
+                                 <div class="flex-shrink-0 brand-gradient text-white rounded-lg p-3 mt-1">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                 </div>
+                                 <div>
+                                     <h3 class="font-semibold text-lg mb-1 text-gray-800">Operating Hours</h3>
+                                     <ul class="text-gray-600 text-sm space-y-1">
+                                         <li><b>Weekdays:</b> 5 AM - 10 AM & 5 PM - 2 AM</li>
+                                         <li><b>Tuesdays & Holidays:</b> 24 Hours</li>
+                                     </ul>
+                                 </div>
+                             </div>
+                             <div class="flex items-start space-x-4 p-5 rounded-lg border border-gray-200 hover:shadow-sm transition duration-200">
+                                 <div class="flex-shrink-0 brand-gradient text-white rounded-lg p-3 mt-1">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 4h4m5.586 4.414a2 2 0 01-2.828 0L7 14.586V11a2 2 0 012-2h4a2 2 0 012 2v3.586l-2.586 2.586z" /></svg>
+                                 </div>
+                                 <div>
+                                     <h3 class="font-semibold text-lg mb-1 text-gray-800">Subscription Plans</h3>
+                                     <p class="text-gray-600 text-sm">Purchase semester or yearly plans from the finance office for uninterrupted access.</p>
+                                 </div>
+                             </div>
+                             <div class="flex items-start space-x-4 p-5 rounded-lg border border-gray-200 hover:shadow-sm transition duration-200">
+                                 <div class="flex-shrink-0 brand-gradient text-white rounded-lg p-3 mt-1">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                                 </div>
+                                 <div>
+                                     <h3 class="font-semibold text-lg mb-1 text-gray-800">Content Filtering</h3>
+                                     <p class="text-gray-600 text-sm">To ensure an academic environment, certain non-educational sites are restricted.</p>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+
+                 <!-- FAQ Section -->
+                 <div class="py-16 md:py-20 bg-gray-50 border-t border-gray-200">
+                     <div class="container mx-auto px-6 max-w-3xl">
+                         <div class="text-center mb-12">
+                             <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Frequently Asked Questions</h2>
+                             <p class="text-gray-600 mt-3">Find quick answers to common questions below.</p>
+                         </div>
+                         <div class="space-y-3" id="faqAccordion">
+                             <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                                 <button class="w-full flex justify-between items-center text-left p-4 md:p-5 font-semibold text-base md:text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded-lg" data-faq-toggle="1" aria-expanded="false" aria-controls="faq-answer-1">
+                                     <span>How many devices can I register?</span>
+                                     <svg class="faq-icon w-5 h-5 transform transition-transform duration-200 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                                 </button>
+                                 <div id="faq-answer-1" class="faq-content hidden px-4 md:px-5 pb-4 text-gray-600 text-sm md:text-base border-t border-gray-100">
+                                     <p class="pt-3">Each student is permitted to register up to three personal devices (e.g., a laptop, a smartphone, and a tablet).</p>
+                                 </div>
+                             </div>
+                             <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                                 <button class="w-full flex justify-between items-center text-left p-4 md:p-5 font-semibold text-base md:text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded-lg" data-faq-toggle="2" aria-expanded="false" aria-controls="faq-answer-2">
+                                     <span>Is there a data limit?</span>
+                                     <svg class="faq-icon w-5 h-5 transform transition-transform duration-200 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                                 </button>
+                                 <div id="faq-answer-2" class="faq-content hidden px-4 md:px-5 pb-4 text-gray-600 text-sm md:text-base border-t border-gray-100">
+                                     <p class="pt-3">Yes, the current monthly limit is 100GB of high-speed data per student under the Fair Usage Policy (FUP).</p>
+                                 </div>
+                             </div>
+                             <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                                 <button class="w-full flex justify-between items-center text-left p-4 md:p-5 font-semibold text-base md:text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded-lg" data-faq-toggle="3" aria-expanded="false" aria-controls="faq-answer-3">
+                                     <span>Who should I contact for support?</span>
+                                     <svg class="faq-icon w-5 h-5 transform transition-transform duration-200 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                                 </button>
+                                 <div id="faq-answer-3" class="faq-content hidden px-4 md:px-5 pb-4 text-gray-600 text-sm md:text-base border-t border-gray-100">
+                                     <p class="pt-3">Use the floating chat assistant for quick questions, or register a complaint in your dashboard for complex issues.</p>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+            </section>
+
+            <!-- Auth Page (Login/Sign Up) -->
+            <section id="authPage" class="hidden py-16 bg-gray-50 flex items-center justify-center min-h-[calc(100vh-86px)]">
+                <div class="container mx-auto px-6 w-full max-w-md">
+                        <div class="glassmorphism p-8 rounded-xl shadow-lg border border-gray-200/50">
+                            <h2 class="text-2xl md:text-3xl font-bold text-center mb-6 text-gray-800">Portal Access</h2>
+                            <form id="authForm" onsubmit="handleAuthForm(event)" novalidate>
+                                <div class="mb-4">
+                                    <label for="email" class="block text-gray-700 font-medium mb-1.5 text-sm">University Email</label>
+                                    <input type="email" id="email" class="w-full px-3 py-2 bg-white/90 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base transition duration-150 ease-in-out" placeholder="yourname@banasthali.in" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="password" class="block text-gray-700 font-medium mb-1.5 text-sm">Password</label>
+                                    <input type="password" id="password" class="w-full px-3 py-2 bg-white/90 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base transition duration-150 ease-in-out" placeholder="••••••••" required>
+                                </div>
+                                <div id="reenterPasswordContainer" class="mb-5 hidden">
+                                    <label for="reenter-password" class="block text-gray-700 font-medium mb-1.5 text-sm">Re-enter Password</label>
+                                    <input type="password" id="reenter-password" class="w-full px-3 py-2 bg-white/90 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base transition duration-150 ease-in-out" placeholder="••••••••">
+                                </div>
+
+                                <div class="text-center mb-4">
+                                    <!-- Use onclick only -->
+                                    <a href="#" id="authToggle" onclick="toggleAuthMode(event)" class="text-sm text-blue-600 hover:text-blue-800 transition duration-150 ease-in-out">Don't have an account? Sign Up</a>
+                                </div>
+
+                                <p id="authError" class="text-red-600 text-sm text-center mb-4 h-5"></p> <!-- Error/Success message placeholder -->
+                                <button type="submit" id="authButton" class="w-full brand-gradient text-white font-semibold py-2.5 px-4 rounded-md hover:opacity-90 transition duration-200 shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-base disabled:opacity-70 disabled:cursor-not-allowed">
+                                    Login
+                                </button>
+                                <div class="mt-5 text-center">
+                                    <a href="#" class="text-sm text-blue-600 hover:text-blue-800 transition duration-150 ease-in-out">Forgot Password?</a>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+            </section>
+
+            <!-- Email Verification Page -->
+             <section id="emailVerificationPage" class="hidden py-16 bg-gray-50 flex items-center justify-center min-h-[calc(100vh-86px)]">
+                 <div class="container mx-auto px-6 w-full max-w-md">
+                         <div class="glassmorphism p-8 md:p-10 rounded-xl shadow-lg text-center border border-gray-200/50">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-20 md:w-20 brand-gradient-text mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                             <h2 class="text-2xl md:text-3xl font-bold text-center mt-6 mb-4 text-gray-800">Check Your Email</h2>
+                             <p class="text-gray-600 mb-6 md:mb-8 text-sm md:text-base">
+                                A verification link has been sent to <b id="verificationEmailAddress" class="break-words font-medium">your-email@banasthali.in</b>. Click the link to continue.
+                             </p>
+                             <p class="text-xs md:text-sm text-gray-500 mb-4">(Simulation: Click below to verify)</p>
+                             <button id="verifyButton" onclick="handleEmailVerification(event)" class="w-full bg-green-600 text-white font-semibold py-2.5 px-4 rounded-md hover:bg-green-700 transition duration-200 shadow disabled:opacity-70 disabled:cursor-not-allowed">
+                                 I've Clicked the Link
+                             </button>
+                         </div>
+                 </div>
+            </section>
+
+            <!-- MAC Address Page -->
+            <section id="macAddressPage" class="hidden py-16 bg-gray-50 flex items-center justify-center min-h-[calc(100vh-86px)]">
+                 <div class="container mx-auto px-6 w-full max-w-lg">
+                         <div class="glassmorphism p-8 rounded-xl shadow-lg border border-gray-200/50">
+                             <h2 class="text-xl md:text-2xl font-bold text-center mb-2 text-gray-800">Device Registration</h2>
+                             <p class="text-center text-gray-600 mb-6 text-sm">Complete this setup for your device.</p>
+                             <form id="deviceForm" onsubmit="handleDeviceRegistration(event)" novalidate>
+                                 <div class="mb-4">
+                                     <label for="studentId" class="block text-gray-700 font-medium mb-1.5 text-sm">Student ID</label>
+                                     <input type="text" id="studentId" class="w-full px-3 py-2 bg-white/90 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base" placeholder="Enter official student ID" required>
+                                 </div>
+                                 <div class="mb-5">
+                                     <label for="macAddress" class="block text-gray-700 font-medium mb-1.5 text-sm">Device MAC Address</label>
+                                     <div class="flex flex-col space-y-4">
+                                         <div class="flex items-center space-x-2">
+                                            <input type="text" id="macAddress" pattern="^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$" title="Enter MAC in XX:XX:XX:XX:XX:XX or XX-XX-XX-XX-XX-XX format" class="flex-grow px-3 py-2 bg-white/90 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm md:text-base font-mono" placeholder="XX:XX:XX:XX:XX:XX" required>
+                                            <a href="#" onclick="showMacHelpModal(event); event.preventDefault();" class="text-sm text-blue-600 hover:text-blue-800 transition duration-150 ease-in-out whitespace-nowrap pt-1">How?</a>
+                                         </div>
+                                         <!-- MAC Upload Feature -->
+                                        <div class="mac-upload-section pt-4 border-t border-gray-200">
+                                          <h3 class="font-medium text-gray-700 mb-2 text-sm">Or Fetch Automatically</h3>
+                                          <p class="text-xs text-gray-600 mb-2">Download & run:
+                                             <a href="./get_system_info.bat" download class="text-blue-600 hover:text-blue-800 font-medium">MAC Fetcher (.bat)</a>
+                                          </p>
+                                          <p class="text-xs text-gray-600 mb-3">Then upload `System_Details.txt`:</p>
+                                          <div class="flex items-center space-x-2">
+                                            <label class="block flex-grow">
+                                                <span class="sr-only">Choose file</span>
+                                                <input type="file" id="macFile" accept=".txt" class="block w-full text-xs text-gray-500"/>
+                                            </label>
+                                            <button type="button" onclick="readMacFile()" class="px-3 py-1.5 bg-gray-600 text-white text-xs font-medium rounded-md hover:bg-gray-700 whitespace-nowrap transition duration-150 ease-in-out">Upload</button>
+                                          </div>
+                                          <p id="macFileStatus" class="text-xs mt-2 font-medium h-4"></p> <!-- Placeholder height -->
+                                        </div>
+                                     </div>
+                                 </div>
+                                  <p id="deviceFormError" class="text-red-600 text-sm text-center mb-4 h-5"></p>
+                                 <button type="submit" id="deviceSubmitButton" class="w-full brand-gradient text-white font-semibold py-2.5 px-4 rounded-md hover:opacity-90 transition duration-200 shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-base disabled:opacity-70 disabled:cursor-not-allowed">
+                                     Submit Device
+                                 </button>
+                             </form>
+                         </div>
+                 </div>
+            </section>
+
+            <!-- Student Details & Plan Selection Page -->
+            <section id="studentDetailsPage" class="hidden py-16 bg-gray-50 flex items-center justify-center min-h-[calc(100vh-86px)]">
+                 <div class="container mx-auto px-6 w-full max-w-xl">
+                         <div class="glassmorphism p-8 rounded-xl shadow-lg border border-gray-200/50">
+                             <h2 class="text-2xl md:text-3xl font-bold text-center mb-6 text-gray-800">Confirm Your Details & Plan</h2>
+
+                             <!-- Student Details -->
+                             <div class="bg-white/70 rounded-lg p-6 mb-8 border border-gray-200/90">
+                                 <h3 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Student Information</h3>
+                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                     <div>
+                                         <p class="text-xs text-gray-500 uppercase font-medium tracking-wider">Name</p>
+                                         <p id="detailsStudentName" class="font-medium text-base text-gray-900"></p>
+                                     </div>
+                                     <div>
+                                         <p class="text-xs text-gray-500 uppercase font-medium tracking-wider">Student ID</p>
+                                         <p id="detailsStudentId" class="font-medium text-base text-gray-900"></p>
+                                     </div>
+                                     <div class="md:col-span-2">
+                                         <p class="text-xs text-gray-500 uppercase font-medium tracking-wider">Course</p>
+                                         <p id="detailsStudentCourse" class="font-medium text-base text-gray-900"></p>
+                                     </div>
+                                 </div>
+                             </div>
+
+                             <!-- Plan Selection -->
+                             <form id="planForm" onsubmit="handlePlanSelection(event)">
+                                <h3 class="text-xl md:text-2xl font-semibold text-center mb-5 text-gray-800">Select Plan</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                    <label class="plan-card block border-2 border-gray-300 rounded-lg p-5 text-center hover:shadow-md bg-white/50">
+                                        <input type="radio" name="plan" value="Semester" class="sr-only" onchange="updatePlanSelection()">
+                                        <span class="text-xl md:text-2xl font-bold brand-gradient-text block mb-1">Semester</span>
+                                        <span class="block text-gray-600 text-sm">Ideal for one semester.</span>
+                                    </label>
+                                    <label class="plan-card block border-2 border-gray-300 rounded-lg p-5 text-center hover:shadow-md bg-white/50">
+                                        <input type="radio" name="plan" value="Annual" class="sr-only" onchange="updatePlanSelection()">
+                                        <span class="text-xl md:text-2xl font-bold brand-gradient-text block mb-1">Annual</span>
+                                        <span class="block text-gray-600 text-sm">Best value for the full year.</span>
+                                    </label>
+                                </div>
+                                <p id="planError" class="text-red-600 text-sm text-center mb-4 h-5"></p>
+                                <button type="submit" id="planSubmitButton" class="w-full brand-gradient text-white font-semibold py-2.5 px-4 rounded-md hover:opacity-90 transition duration-200 shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-base disabled:opacity-70 disabled:cursor-not-allowed">
+                                    Confirm & Enter Dashboard
+                                </button>
+                             </form>
+                         </div>
+                 </div>
+            </section>
+
+            <!-- Student Dashboard Page -->
+            <section id="dashboardPage" class="hidden">
+                 <div class="flex h-screen bg-gray-100 overflow-hidden">
+                    <!-- Sidebar -->
+                    <aside id="sidebar" class="w-60 md:w-64 bg-gray-900 text-gray-300 flex-shrink-0 flex flex-col fixed inset-y-0 left-0 z-30 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-200 ease-in-out shadow-lg">
+                        <div class="p-4 border-b border-gray-700/60 flex-shrink-0">
+                            <h2 class="text-xl font-bold text-white tracking-tight">SmartiFI</h2>
+                            <span class="text-xs text-gray-400">Student Portal</span>
+                        </div>
+                        <!-- Scrolling Nav -->
+                        <nav id="student-sidebar-nav" class="flex-grow p-2 overflow-y-auto space-y-1">
+                            <a href="#" onclick="showStudentDashboardSection('student-home', this); event.preventDefault();" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700/60 transition-colors duration-150 text-sm font-medium">
+                                <svg class="h-5 w-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="#" onclick="showStudentDashboardSection('student-account', this); event.preventDefault();" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700/60 transition-colors duration-150 text-sm font-medium text-gray-300 hover:text-white">
+                                <svg class="h-5 w-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                <span>Your Account</span>
+                            </a>
+                             <a href="#" onclick="showStudentDashboardSection('student-speed-test', this); event.preventDefault();" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700/60 transition-colors duration-150 text-sm font-medium text-gray-300 hover:text-white">
+                                <svg class="h-5 w-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                                <span>Speed Test</span>
+                            </a>
+                            <a href="#" onclick="showStudentDashboardSection('student-complaint-center', this); event.preventDefault();" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-700/60 transition-colors duration-150 text-sm font-medium text-gray-300 hover:text-white">
+                               <svg class="h-5 w-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V4a2 2 0 012-2h8a2 2 0 012 2v4z" /></svg>
+                                <span>Complaint Center</span>
+                            </a>
+                        </nav>
+                         <!-- Logout -->
+                        <div class="p-2 mt-auto border-t border-gray-700/60 flex-shrink-0">
+                             <a href="#" onclick="logout(); event.preventDefault();" class="flex items-center gap-3 px-3 py-2 rounded-md bg-red-600/70 hover:bg-red-700/80 transition-colors duration-150 text-sm font-medium text-red-100 hover:text-white">
+                                 <svg class="h-5 w-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                                 <span>Logout</span>
+                             </a>
+                        </div>
+                    </aside>
+
+                    <!-- Mobile Overlay -->
+                     <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-60 z-20 hidden md:hidden" onclick="toggleSidebar(false)"></div>
+
+
+                    <!-- Main Content Area -->
+                    <div class="flex-1 flex flex-col overflow-hidden">
+                         <!-- Mobile Header -->
+                         <header class="bg-white/95 backdrop-blur-sm shadow-sm md:hidden sticky top-0 z-10 flex-shrink-0 h-14 flex items-center justify-between px-4 border-b border-gray-200">
+                             <h2 class="text-lg font-semibold brand-gradient-text">Student Dashboard</h2>
+                             <button id="hamburger-menu" onclick="toggleSidebar(true)" aria-label="Open sidebar" class="text-gray-500 hover:text-gray-800 focus:outline-none p-2 -mr-2 rounded-md focus:ring-1 focus:ring-indigo-500">
+                                 <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                             </button>
+                         </header>
+
+                        <!-- Scrolling Content Area -->
+                        <div class="content-scroll-area flex-grow p-4 md:p-6 lg:p-8 bg-gray-100">
+                            <!-- Dashboard Home -->
+                            <div id="student-home" class="fade-in-up">
+                                <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-5 md:mb-6">Welcome, <span id="dashboardUsername" class="brand-gradient-text"></span>!</h1>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+                                     <div class="glassmorphism p-5 rounded-lg shadow dashboard-card border border-gray-200/50">
+                                         <div class="flex items-center gap-3">
+                                             <div class="bg-blue-100 p-2.5 rounded-full"><svg class="h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" /></svg></div>
+                                             <div><p class="text-gray-500 text-xs font-medium uppercase tracking-wider">Student ID</p><p id="dashboardStudentId" class="font-semibold text-base md:text-lg break-all"></p></div>
+                                          </div>
+                                     </div>
+                                      <div class="glassmorphism p-5 rounded-lg shadow dashboard-card border border-gray-200/50">
+                                          <div class="flex items-center gap-3">
+                                              <div class="bg-green-100 p-2.5 rounded-full"><svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7l-4 4 4 4m8-8l4 4-4 4" /></svg></div>
+                                              <div><p class="text-gray-500 text-xs font-medium uppercase tracking-wider">Status</p><p class="font-semibold text-base md:text-lg text-green-600">Connected</p></div>
+                                           </div>
+                                      </div>
+                                      <div class="glassmorphism p-5 rounded-lg shadow dashboard-card border border-gray-200/50">
+                                           <div class="flex items-center gap-3">
+                                             <div class="bg-yellow-100 p-2.5 rounded-full"><svg class="h-6 w-6 text-yellow-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+                                             <div><p class="text-gray-500 text-xs font-medium uppercase tracking-wider">Pending Issues</p><p id="pending-complaints-count" class="font-semibold text-base md:text-lg">0</p></div>
+                                          </div>
+                                      </div>
+                                </div>
+                            </div>
+
+                            <!-- Account Details -->
+                            <div id="student-account" class="hidden fade-in-up">
+                                <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-5 md:mb-6">Your Account</h1>
+                                <div class="glassmorphism p-6 md:p-8 rounded-lg shadow max-w-2xl border border-gray-200/50">
+                                    <div class="space-y-5">
+                                        <div><p class="text-gray-500 text-xs font-medium uppercase tracking-wider mb-1">Student ID</p><p id="accountStudentId" class="font-semibold text-base md:text-lg break-all"></p></div>
+                                        <div><p class="text-gray-500 text-xs font-medium uppercase tracking-wider mb-1">Registered Email</p><p id="accountUserEmail" class="font-semibold text-base md:text-lg break-all"></p></div>
+                                        <div><p class="text-gray-500 text-xs font-medium uppercase tracking-wider mb-1">Device MAC</p><p id="accountMacAddress" class="font-semibold text-base md:text-lg font-mono break-all"></p></div>
+                                        <div><p class="text-gray-500 text-xs font-medium uppercase tracking-wider mb-1">Selected Plan</p><p id="accountPlan" class="font-semibold text-base md:text-lg"></p></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Speed Test -->
+                            <div id="student-speed-test" class="hidden fade-in-up">
+                                <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-5 md:mb-6">Internet & Usage</h1>
+                                <div class="glassmorphism p-6 md:p-8 rounded-lg shadow grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center border border-gray-200/50">
+                                    <div class="flex flex-col items-center">
+                                        <p class="font-medium mb-3 text-base text-gray-700">Monthly Data Usage</p>
+                                        <div class="relative w-32 h-32 md:w-36 md:h-36">
+                                            <svg class="w-full h-full" viewBox="0 0 100 100">
+                                                <circle class="text-gray-200" stroke-width="9" stroke="currentColor" fill="transparent" r="45" cx="50" cy="50" />
+                                                <circle id="dataUsageCircle" class="progress-ring-circle text-blue-500" stroke-width="9" stroke-linecap="round" stroke="currentColor" fill="transparent" r="45" cx="50" cy="50"/>
+                                            </svg>
+                                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                                <span id="dataUsageText" class="text-xl md:text-2xl font-bold block leading-tight text-gray-800">--GB</span>
+                                                <span class="text-xs text-gray-500 block">of 100GB</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="font-medium mb-3 text-base text-gray-700">Live Speed</p>
+                                        <div class="text-xl md:text-2xl font-bold space-x-4 md:space-x-6 mb-2 text-gray-800">
+                                            <span class="inline-flex items-center gap-1 text-green-600">
+                                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" /></svg>
+                                                <span id="downloadSpeed">--</span>
+                                            </span>
+                                            <span class="inline-flex items-center gap-1 text-blue-600">
+                                                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" /></svg>
+                                                <span id="uploadSpeed">--</span>
+                                            </span>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mb-4">Mbps</p>
+                                        <button onclick="runSpeedTest()" id="speedTestButton" class="mt-3 w-full max-w-[180px] mx-auto bg-gray-700 text-white font-medium py-2 px-4 rounded-md hover:bg-gray-800 transition duration-200 shadow text-sm disabled:opacity-70">
+                                            Run Test
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Complaint Center -->
+                             <div id="student-complaint-center" class="hidden fade-in-up">
+                                 <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-5 md:mb-6">Complaint Center</h1>
+                                 <div class="glassmorphism p-6 md:p-8 rounded-lg shadow border border-gray-200/50">
+                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                                         <div>
+                                             <h4 class="font-medium text-base md:text-lg mb-3 text-gray-800">Register New Complaint</h4>
+                                             <form id="complaintForm" onsubmit="handleComplaintSubmit(event)">
+                                                 <label for="complaintText" class="sr-only">Complaint Description</label>
+                                                 <textarea id="complaintText" rows="4" class="w-full p-2.5 bg-white/90 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 text-sm mb-3 transition duration-150 ease-in-out" placeholder="Describe your issue..." required></textarea>
+                                                 <button type="submit" id="complaintSubmitButton" class="w-full bg-red-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-700 shadow text-sm transition duration-150 ease-in-out disabled:opacity-70">Submit Complaint</button>
+                                             </form>
+                                         </div>
+                                         <div>
+                                             <h4 class="font-medium text-base md:text-lg mb-3 text-gray-800">Complaint History</h4>
+                                             <div id="complaintList" class="space-y-2 max-h-64 overflow-y-auto pr-1 border border-gray-200/60 bg-white/40 rounded-md p-3">
+                                                 <!-- Complaints will be loaded here -->
+                                                 <p class="text-gray-500 text-xs italic p-2">Loading...</p>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                        </div> <!-- End Scrolling Content Area -->
+                    </div> <!-- End Main Content Area Flex Container -->
+                </div> <!-- End Dashboard Flex Container -->
+            </section>
+
+            <!-- Admin Dashboard Page -->
+            <section id="adminDashboardPage" class="hidden">
+                 <!-- Admin Dashboard HTML (remains unchanged) -->
+            </section>
+        </main>
+
+        <!-- MAC Address Help Modal -->
+        <div id="macHelpModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4 transition-opacity duration-200 ease-in-out opacity-0">
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-xl max-w-lg w-full relative transform scale-95 transition-all duration-200 ease-out opacity-0 translate-y-4">
+                <button onclick="closeMacHelpModal()" aria-label="Close MAC Address Help" class="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-3xl leading-none p-1 focus:outline-none focus:ring-1 focus:ring-inset focus:ring-blue-500 rounded-full">&times;</button>
+                <h3 class="text-xl md:text-2xl font-bold mb-4 text-gray-800">How to Find Your MAC Address</h3>
+                <div class="space-y-3 text-gray-700 text-sm md:text-base">
+                    <p><strong>Windows:</strong> Open Command Prompt (type `cmd` in search), type `ipconfig /all`, press Enter. Look for "Physical Address" under your "Wireless LAN adapter Wi-Fi".</p>
+                    <p><strong>macOS:</strong> Apple Menu > System Settings > Network > Wi-Fi > Details > Hardware. It's listed as "MAC Address".</p>
+                    <p><strong>Android:</strong> Settings > About Phone > Status (or Hardware Info). Look for "Wi-Fi MAC address". (Path varies).</p>
+                    <p><strong>iOS:</strong> Settings > General > About. Scroll to find "Wi-Fi Address".</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Floating Chatbot -->
+        <div class="fixed bottom-4 right-4 md:bottom-5 md:right-5 z-40">
+            <button id="chatbotToggle" aria-label="Toggle Chat" class="brand-gradient text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:scale-105 transform transition duration-150 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
+                 <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+            </button>
+            <div id="chatbotWindow" class="hidden absolute bottom-[calc(100%+0.5rem)] right-0 w-72 md:w-80 bg-white rounded-lg shadow-xl transform scale-95 opacity-0 origin-bottom-right border border-gray-200">
+                <div class="brand-gradient text-white p-2.5 rounded-t-lg flex justify-between items-center">
+                    <h4 class="font-semibold text-sm ml-1">SmartiFI Assistant</h4>
+                    <button onclick="toggleChatbot(false)" aria-label="Close Chat" class="text-white hover:text-gray-200 mr-1 p-1 rounded-full hover:bg-white/20 focus:outline-none focus:ring-1 focus:ring-white">&times;</button>
+                </div>
+                <div id="chatMessages" class="p-3 h-60 overflow-y-auto bg-gray-50"></div>
+                <div class="p-2 border-t bg-white rounded-b-lg">
+                    <input type="text" id="chatInput" class="w-full border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500" placeholder="Ask a question...">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ======================= JAVASCRIPT ======================= -->
+    <script>
+    const API_URL = 'http://localhost:4000/api'; // Server URL
+    let currentUserState = null; // Holds logged-in user data
+
+    // --- API Request Helper ---
+    async function apiRequest(endpoint, method = 'GET', body = null) {
+        const token = localStorage.getItem('smartifi-token');
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        if (token) headers.append('Authorization', `Bearer ${token}`);
+        const config = { method, headers };
+        if (body) config.body = JSON.stringify(body);
+
+        // Indicate loading state (optional, can add a spinner later)
+        // document.body.style.cursor = 'wait';
+
+        try {
+            // console.log(`API Req: ${method} ${API_URL}${endpoint}`, body || ''); // DEBUG
+            const response = await fetch(`${API_URL}${endpoint}`, config);
+            const data = await response.json();
+            // console.log(`API Res: ${response.status}`, data); // DEBUG
+            if (!response.ok) throw new Error(data?.message || `HTTP ${response.status}`);
+            return data;
+        } catch (err) {
+            console.error('API Error:', endpoint, err);
+            displayFormError(err.message || "Network or server error.");
+            throw err;
+        } finally {
+            // Remove loading state
+            // document.body.style.cursor = 'default';
+        }
+    }
+
+    // --- Error Display Helper ---
+    function displayFormError(message, isSuccess = false) { // Added isSuccess flag
+        const errorElements = {
+            authPage: 'authError',
+            macAddressPage: 'deviceFormError',
+            studentDetailsPage: 'planError',
+        };
+        const currentPageId = document.querySelector('main > section:not(.hidden)')?.id;
+        const errorElementId = currentPageId ? errorElements[currentPageId] : null;
+        const errorEl = errorElementId ? document.getElementById(errorElementId) : null;
+
+        if (errorEl) {
+             errorEl.textContent = message;
+             // Apply success or error styling
+             errorEl.classList.toggle('success-message', isSuccess);
+             errorEl.classList.toggle('text-red-600', !isSuccess); // Keep error color specific
+             errorEl.classList.remove('hidden');
+        } else {
+             console.warn("No error/success display for page:", currentPageId, "| Msg:", message);
+        }
+    }
+    function clearFormError() {
+         document.querySelectorAll('#authError, #deviceFormError, #planError').forEach(el => {
+             el.textContent = '';
+             el.classList.add('hidden');
+             el.classList.remove('success-message', 'text-red-600'); // Remove specific classes
+         });
+    }
+
+
+    // --- Page Navigation ---
+    function showPage(pageId) {
+        // console.log("Showing page:", pageId); // DEBUG
+        document.querySelectorAll('main > section').forEach(section => section.classList.add('hidden'));
+        const page = document.getElementById(pageId);
+        if (page) {
+            page.classList.remove('hidden');
+            const isDashboard = ['dashboardPage', 'adminDashboardPage'].includes(pageId);
+            document.body.classList.toggle('no-scroll', isDashboard || !document.getElementById('macHelpModal')?.classList.contains('hidden')); // Prevent scroll if dashboard or modal open
+            document.body.style.backgroundColor = isDashboard ? '#f3f4f6' : '#f9fafb';
+
+            if (isDashboard && window.innerWidth < 768) toggleSidebar(false);
+            clearFormError(); // Clear errors when navigating away from a form page
+            window.scrollTo(0, 0); // Scroll to top on page change
+        } else {
+            console.error("Page not found:", pageId, ". Falling back to informatoryPage.");
+            document.getElementById('informatoryPage')?.classList.remove('hidden');
+            document.body.classList.remove('no-scroll');
+            document.body.style.backgroundColor = '#f9fafb';
+        }
+    }
+
+    // --- Authentication ---
+    let isLoginMode = true;
+    const authForm = document.getElementById('authForm');
+    const authToggle = document.getElementById('authToggle');
+    const reenterPasswordContainer = document.getElementById('reenterPasswordContainer');
+    const reenterPasswordInput = document.getElementById('reenter-password');
+    const authButton = document.getElementById('authButton');
+
+    function toggleAuthMode(event) {
+        if (event) event.preventDefault();
+        isLoginMode = !isLoginMode;
+        clearFormError(); // Clear errors on toggle
+        if(authForm) authForm.reset(); // Reset form fields
+        if (isLoginMode) {
+            if(authToggle) authToggle.textContent = "Don't have an account? Sign Up";
+            if(authButton) authButton.textContent = "Login";
+            if(reenterPasswordContainer) reenterPasswordContainer.classList.add('hidden');
+            if(reenterPasswordInput) reenterPasswordInput.required = false;
+        } else {
+            if(authToggle) authToggle.textContent = "Already have an account? Login";
+            if(authButton) authButton.textContent = "Sign Up";
+            if(reenterPasswordContainer) reenterPasswordContainer.classList.remove('hidden');
+            if(reenterPasswordInput) reenterPasswordInput.required = true;
+        }
+    }
+    // Rely only on onclick in HTML
+
+
+    async function handleAuthForm(event) {
+        event.preventDefault();
+        clearFormError();
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const email = emailInput?.value.trim();
+        const password = passwordInput?.value;
+
+        if (!email || !password || !email.includes('@')) { displayFormError("Valid email & password required."); return; }
+
+        authButton.disabled = true;
+        authButton.textContent = isLoginMode ? 'Logging in...' : 'Signing up...';
+        try {
+            let data;
+            if (isLoginMode) {
+                // --- LOGIN ---
+                data = await apiRequest('/auth/login', 'POST', { email, password });
+                if (!data?.token || !data?.user) throw new Error("Invalid response from server.");
+                localStorage.setItem('smartifi-token', data.token);
+                routeUser(data.user); // Go to appropriate page after login
+
+            } else {
+                // --- SIGN UP / ACTIVATE ---
+                const reenterPassword = reenterPasswordInput.value;
+                if (password !== reenterPassword) throw new Error("Passwords do not match.");
+                if (!email.toLowerCase().endsWith('@banasthali.in')) throw new Error("Signup requires an @banasthali.in email.");
+                if (password.length < 6) throw new Error("Password must be at least 6 characters.");
+
+                // Call the signup/activate endpoint
+                data = await apiRequest('/auth/signup', 'POST', { email, password });
+
+                // --- NEW SUCCESS HANDLING for SIGNUP ---
+                // Display success message in the error field (styled green)
+                displayFormError(data.message || 'Account activation successful! Please log in.', true); // true = isSuccess
+
+                // Automatically switch back to Login mode
+                if (!isLoginMode) { // Ensure we are in signup mode before toggling
+                   toggleAuthMode(); // Switch UI to Login
+                }
+                // Clear password fields for security
+                passwordInput.value = '';
+                reenterPasswordInput.value = '';
+                // NO automatic navigation, user now needs to log in explicitly
+
+            }
+        } catch (err) {
+            // --- NEW ERROR HANDLING for SIGNUP ---
+            if (!isLoginMode && err.message === 'Account already activated. Please Login.') {
+                 // If signup failed because account is active, show message and switch to login
+                 displayFormError(err.message); // Show the specific error
+                 if (!isLoginMode) { // Only toggle if still in signup mode
+                    toggleAuthMode(); // Switch UI to Login
+                 }
+                 // Clear password fields
+                 passwordInput.value = '';
+                 reenterPasswordInput.value = '';
+
+            } else {
+                 // For other errors (login fails, other signup fails), just display the error
+                 // displayFormError is already called by apiRequest helper
+                 console.error("Auth failed:", err.message);
+            }
+        }
+        finally {
+            // Re-enable button ONLY if we are still on the auth page
+            // (Successful login will navigate away)
+             const currentPageId = document.querySelector('main > section:not(.hidden)')?.id;
+             if (currentPageId === 'authPage') {
+                 authButton.disabled = false;
+                 // Ensure button text matches current mode after potential toggle
+                 authButton.textContent = isLoginMode ? 'Login' : 'Sign Up';
+             }
+        }
+    }
+
+
+    // --- User Routing & State ---
+    function routeUser(user) {
+        currentUserState = user;
+        if (!user || !user.role) { logout(); return; }
+
+        if (user.role === 'admin') showPage('adminDashboardPage');
+        else { // Student Flow
+            if (!user.verified) {
+                document.getElementById('verificationEmailAddress').textContent = user.email;
+                showPage('emailVerificationPage');
+            } else if (!user.student_id || !user.mac_address) {
+                const studentIdInput = document.getElementById('studentId');
+                if(studentIdInput) studentIdInput.value = user.student_id || '';
+                showPage('macAddressPage');
+            } else if (!user.plan) {
+                populateAndShowStudentDetails(user); // Prepares details page
+                showPage('studentDetailsPage'); // Navigates to it
+            } else {
+                showStudentDashboard(user); // All set
+            }
+        }
+    }
+
+    async function checkInitialState() {
+        const token = localStorage.getItem('smartifi-token');
+        if (token) {
+            try {
+                const data = await apiRequest('/user/me');
+                if (data?.user) routeUser(data.user);
+                else logout();
+            } catch (err) { logout(); }
+        } else {
+            showPage('informatoryPage');
+        }
+    }
+
+    function logout() {
+        currentUserState = null;
+        localStorage.removeItem('smartifi-token');
+        if(authForm) authForm.reset();
+        if (!isLoginMode) toggleAuthMode(); // Reset to Login mode
+        clearFormError();
+        showPage('informatoryPage');
+    }
+
+    // --- Registration Steps ---
+    async function handleEmailVerification(event) {
+        const verifyButton = event.target;
+        if(verifyButton) { verifyButton.disabled = true; verifyButton.textContent = "Verifying..."; }
+        try {
+            await apiRequest('/auth/verify', 'POST');
+            const data = await apiRequest('/user/me');
+            if (data?.user) routeUser(data.user);
+            else throw new Error("Failed to get updated user data after verification.");
+        } catch (err) { logout(); } // Fallback to logout on error
+        // Button state handled by page navigation
+    }
+
+    async function handleDeviceRegistration(event) {
+        event.preventDefault(); clearFormError();
+        const studentIdInput = document.getElementById('studentId');
+        const macAddressInput = document.getElementById('macAddress');
+        const studentId = studentIdInput?.value.trim();
+        const macAddress = macAddressInput?.value.trim();
+        const submitButton = document.getElementById('deviceSubmitButton');
+
+        if (!studentId || !macAddress) { displayFormError("Student ID and MAC Address are required."); return; }
+        const macRegex = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
+        if(!macRegex.test(macAddress)) { displayFormError("Invalid MAC format (XX:XX:.. or XX-XX..)."); return; }
+        const standardizedMac = macAddress.replace(/:/g, '-').toUpperCase();
+
+        submitButton.disabled = true; submitButton.textContent = 'Submitting...';
+        try {
+            await apiRequest('/device/register', 'POST', { studentId, macAddress: standardizedMac });
+            const data = await apiRequest('/user/me');
+            if (data?.user) routeUser(data.user);
+            else throw new Error("Device registered, but failed to get updated data.");
+        } catch (err) { /* Error displayed */ }
+        finally {
+             const currentPageId = document.querySelector('main > section:not(.hidden)')?.id;
+             if (currentPageId === 'macAddressPage') { // Only re-enable if still on page
+                submitButton.disabled = false; submitButton.textContent = 'Submit Device';
+             }
+        }
+    }
+
+    function populateAndShowStudentDetails(user) {
+        const nameEl = document.getElementById('detailsStudentName');
+        const idEl = document.getElementById('detailsStudentId');
+        const courseEl = document.getElementById('detailsStudentCourse');
+        if(nameEl) nameEl.textContent = user.name || user.email.split('@')[0];
+        if(idEl) idEl.textContent = user.student_id || 'N/A';
+        if(courseEl) courseEl.textContent = user.course || 'N/A';
+        const planForm = document.getElementById('planForm');
+        if (planForm) planForm.reset();
+        updatePlanSelection();
+    }
+
+
+    async function handlePlanSelection(event) {
+        event.preventDefault(); clearFormError();
+        const selectedPlanInput = document.querySelector('input[name="plan"]:checked');
+        const submitButton = document.getElementById('planSubmitButton');
+
+        if (selectedPlanInput) {
+            const plan = selectedPlanInput.value;
+            submitButton.disabled = true; submitButton.textContent = 'Confirming...';
+            try {
+                await apiRequest('/plan/select', 'POST', { plan });
+                const data = await apiRequest('/user/me');
+                if (data?.user) routeUser(data.user);
+                else throw new Error("Plan selected, but failed to load dashboard.");
+            } catch (err) { /* Error displayed */ }
+            finally {
+                 const currentPageId = document.querySelector('main > section:not(.hidden)')?.id;
+                 if (currentPageId === 'studentDetailsPage') {
+                    submitButton.disabled = false; submitButton.textContent = 'Confirm & Enter Dashboard';
+                 }
+            }
+        } else { displayFormError('Please select a plan.'); }
+    }
+
+    function updatePlanSelection() {
+        document.querySelectorAll('.plan-card').forEach(card => card.classList.remove('plan-card-selected', 'border-blue-500'));
+        const selectedCard = document.querySelector('input[name="plan"]:checked');
+        if (selectedCard) selectedCard.closest('.plan-card')?.classList.add('plan-card-selected', 'border-blue-500');
+    }
+
+    // --- Dashboard ---
+    function showStudentDashboard(user) {
+        showPage('dashboardPage');
+        const updateText = (id, value, fallback = 'N/A') => {
+             const el = document.getElementById(id); if (el) el.textContent = value || fallback; };
+        updateText('dashboardUsername', user.name || user.email.split('@')[0]);
+        updateText('dashboardStudentId', user.student_id);
+        updateText('accountStudentId', user.student_id);
+        updateText('accountUserEmail', user.email);
+        updateText('accountMacAddress', user.mac_address ? user.mac_address.replace(/:/g, '-') : 'N/A');
+        updateText('accountPlan', user.plan);
+        updateDataUsage(user.data_usage || 0);
+        fetchAndDisplayComplaints();
+        const defaultLink = document.querySelector('#student-sidebar-nav a.sidebar-link'); // Get first link
+        if (defaultLink) showStudentDashboardSection('student-home', defaultLink); // Show default section
+    }
+
+
+    function showStudentDashboardSection(sectionId, element) {
+         document.querySelectorAll('#dashboardPage .content-scroll-area > div[id^="student-"]').forEach(sec => sec.classList.add('hidden'));
+         const sectionToShow = document.getElementById(sectionId);
+         if (sectionToShow) {
+             sectionToShow.classList.remove('hidden', 'fade-in-up'); void sectionToShow.offsetWidth; sectionToShow.classList.add('fade-in-up');
+         } else { document.getElementById('student-home')?.classList.remove('hidden'); }
+
+         document.querySelectorAll('#student-sidebar-nav a.sidebar-link').forEach(link => link.classList.remove('sidebar-link-active', 'bg-indigo-600', 'text-white'));
+         if (element) {
+            element.classList.add('sidebar-link-active', 'bg-indigo-600', 'text-white');
+            element.classList.remove('text-gray-300', 'hover:text-white');
+         }
+
+         if (window.innerWidth < 768) toggleSidebar(false);
+    }
+
+
+     // --- Sidebar Toggle ---
+     const sidebar = document.getElementById('sidebar');
+     const overlay = document.getElementById('sidebar-overlay');
+     const hamburgerMenu = document.getElementById('hamburger-menu');
+
+     function toggleSidebar(forceOpen = null) {
+         if(!sidebar || !overlay) return;
+         const shouldOpen = forceOpen !== null ? forceOpen : sidebar.classList.contains('-translate-x-full');
+         if (shouldOpen) {
+             sidebar.classList.remove('-translate-x-full');
+             overlay.classList.remove('hidden');
+             document.body.classList.add('overflow-hidden', 'md:overflow-auto');
+         } else {
+             sidebar.classList.add('-translate-x-full');
+             overlay.classList.add('hidden');
+             document.body.classList.remove('overflow-hidden', 'md:overflow-auto');
+         }
+     }
+     if(hamburgerMenu) hamburgerMenu.addEventListener('click', () => toggleSidebar(true));
+     if(overlay) overlay.addEventListener('click', () => toggleSidebar(false));
+     // --- End Sidebar ---
+
+    // --- Other UI Components ---
+    // FAQ
+    const faqAccordion = document.getElementById('faqAccordion');
+     if (faqAccordion) {
+        faqAccordion.addEventListener('click', (e) => {
+            const button = e.target.closest('button[data-faq-toggle]'); if (!button) return;
+            const contentId = button.getAttribute('aria-controls'), content = document.getElementById(contentId), icon = button.querySelector('.faq-icon');
+            if (!content || !icon) return;
+            const isOpening = content.classList.contains('hidden');
+            faqAccordion.querySelectorAll('.faq-content').forEach(el => el.classList.add('hidden'));
+            faqAccordion.querySelectorAll('button[data-faq-toggle]').forEach(btn => { btn.setAttribute('aria-expanded', 'false'); btn.querySelector('.faq-icon')?.classList.remove('rotate-180'); });
+            if (isOpening) { content.classList.remove('hidden'); button.setAttribute('aria-expanded', 'true'); icon.classList.add('rotate-180'); }
+        });
+     }
+
+    // MAC Modal
+    const macModal = document.getElementById('macHelpModal'), macModalContent = macModal?.querySelector('div > div');
+    function showMacHelpModal(event) {
+        event.preventDefault(); if (!macModal || !macModalContent) return;
+        macModal.classList.remove('hidden'); requestAnimationFrame(() => { macModal.classList.remove('opacity-0'); macModalContent.classList.remove('scale-95', 'opacity-0', 'translate-y-4'); });
+        document.body.classList.add('no-scroll');
+    }
+    function closeMacHelpModal() {
+        if (!macModal || !macModalContent) return;
+        macModalContent.classList.add('scale-95', 'opacity-0', 'translate-y-4'); macModal.classList.add('opacity-0');
+        setTimeout(() => macModal.classList.add('hidden'), 200); document.body.classList.remove('no-scroll');
+    }
+    if(macModal) macModal.addEventListener('click', (e) => { if (e.target === macModal) closeMacHelpModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === "Escape" && macModal && !macModal.classList.contains('hidden')) closeMacHelpModal(); });
+
+
+    // Speed Test
+    function runSpeedTest() {
+        const btn = document.getElementById('speedTestButton'), dl = document.getElementById('downloadSpeed'), ul = document.getElementById('uploadSpeed'); if(!btn || !dl || !ul) return;
+        btn.disabled = true; btn.textContent = 'Testing...'; dl.textContent = '...'; ul.textContent = '...';
+        setTimeout(() => { dl.textContent = (Math.random() * 55 + 40).toFixed(1); ul.textContent = (Math.random() * 35 + 15).toFixed(1); btn.disabled = false; btn.textContent = 'Run Test Again'; }, 1200);
+    }
+
+    // Data Usage Circle
+    function updateDataUsage(usage) {
+         const circle = document.getElementById('dataUsageCircle'), textEl = document.getElementById('dataUsageText'); if (!circle || !textEl) return;
+        const r = circle.r.baseVal.value, c = 2 * Math.PI * r, pct = Math.max(0, Math.min(100, usage || 0)) / 100; const offset = c - pct * c;
+        circle.style.strokeDasharray=`${c} ${c}`; circle.style.strokeDashoffset=offset; textEl.textContent = `${(usage || 0).toFixed(1)}GB`;
+    }
+
+    // --- Complaints ---
+    async function handleComplaintSubmit(event) {
+        event.preventDefault(); clearFormError();
+        const input = document.getElementById('complaintText'), form = document.getElementById('complaintForm'), btn = document.getElementById('complaintSubmitButton');
+        if (!input || !form || !btn) return; const text = input.value.trim(); if (!text) { alert('Please describe issue.'); return; }
+        btn.disabled = true; btn.textContent = 'Submitting...';
+        try { await apiRequest('/complaints', 'POST', { text }); form.reset(); await fetchAndDisplayComplaints(); }
+        catch (err) { alert(`Failed: ${err.message}`); } finally { btn.disabled = false; btn.textContent = 'Submit Complaint'; }
+    }
+
+    async function fetchAndDisplayComplaints() {
+        const list = document.getElementById('complaintList'), countEl = document.getElementById('pending-complaints-count'); if (!list || !countEl) return;
+        list.innerHTML = `<p class="text-gray-500 text-xs italic p-2">Loading...</p>`;
+        try {
+            const data = await apiRequest('/complaints'); const complaints = data.complaints || []; list.innerHTML = '';
+            if (!complaints.length) list.innerHTML = `<p class="text-gray-500 text-xs italic p-2">No complaints filed.</p>`;
+            else { complaints.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); complaints.forEach(c => {
+                const item = document.createElement('div'); item.className='p-2.5 bg-white/60 rounded border border-gray-200/90 text-xs shadow-sm';
+                const date = new Date(c.created_at).toLocaleString('en-IN', {day:'numeric', month:'short', year:'2-digit', hour:'numeric', minute:'2-digit', hour12:true});
+                const statusColor = c.status==='Pending' ? 'text-yellow-600' : 'text-green-600';
+                item.innerHTML = `<p class="text-gray-800 mb-1.5 break-words leading-snug">${c.text}</p><div class="flex justify-between items-center text-gray-500 pt-1 border-t border-gray-200/70"><span class="text-[10px]">${date}</span><span class="font-semibold text-[11px] ${statusColor}">${c.status}</span></div>`; list.appendChild(item); }); }
+            countEl.textContent = complaints.filter(c => c.status === 'Pending').length;
+        } catch (err) { list.innerHTML = `<p class="text-red-500 text-xs p-2">Error loading: ${err.message}</p>`; countEl.textContent='!'; }
+    }
+    // --- End Complaints ---
+
+    // --- Chatbot ---
+    const chatbotToggle = document.getElementById('chatbotToggle'), chatbotWindow = document.getElementById('chatbotWindow'), chatInput = document.getElementById('chatInput'), chatMessages = document.getElementById('chatMessages');
+    function toggleChatbot(forceOpen = null) { if(!chatbotWindow) return; const isHidden = chatbotWindow.classList.contains('hidden'), openChat = forceOpen !== null ? forceOpen : isHidden; if (openChat) { chatbotWindow.classList.remove('hidden'); requestAnimationFrame(() => chatbotWindow.classList.remove('scale-95', 'opacity-0')); } else { chatbotWindow.classList.add('scale-95', 'opacity-0'); setTimeout(() => chatbotWindow.classList.add('hidden'), 200); } }
+    if (chatbotToggle) chatbotToggle.addEventListener('click', () => toggleChatbot()); if (chatInput) chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleChatInput(); });
+    function handleChatInput() { const text = chatInput.value.trim(); if (text) { addChatMessage(text, 'user'); handleBotResponse(text); } chatInput.value = ''; }
+    function addChatMessage(message, sender) { if (!chatMessages) return; const div = document.createElement('div'), span = document.createElement('span'); span.textContent = message; span.className = 'block px-2.5 py-1.5 rounded-lg max-w-[85%] text-xs leading-snug shadow-sm'; if (sender === 'user') { div.className = 'flex justify-end my-1.5'; span.classList.add('bg-blue-500', 'text-white'); } else { div.className = 'flex justify-start my-1.5'; span.classList.add('bg-gray-200', 'text-gray-800'); } div.appendChild(span); chatMessages.appendChild(div); chatMessages.scrollTop = chatMessages.scrollHeight; }
+    function handleBotResponse(query) { addChatMessage("...", 'bot'); setTimeout(() => { const thinking = Array.from(chatMessages.querySelectorAll('.flex.justify-start span')).pop(); if(thinking?.textContent === '...') thinking.parentElement.remove(); let response = "Sorry, I can only provide basic info. Ask about hours, data limits, devices, plans, or support."; const q = query.toLowerCase(); if (/\b(hour|time|when)\b/.test(q)) response = "WiFi: Weekdays 5AM-10AM & 5PM-2AM. Tues/Holidays: 24 Hrs."; else if (/\b(limit|data|usage|fup)\b/.test(q)) response = "Monthly FUP is 100GB high-speed data."; else if (/\b(device|register|mac|how many)\b/.test(q)) response = "Register up to 3 devices using ID & MAC via portal."; else if (/\b(plan|subscription|cost|price)\b/.test(q)) response = "Semester & Annual plans available. Contact finance office."; else if (/\b(support|help|issue|problem|complaint)\b/.test(q)) response = "Use Complaint Center in dashboard for issues."; else if (/\b(hello|hi|hey|thanks|ok|bye)\b/.test(q)) response = "Hi! How can I help?"; addChatMessage(response, 'bot'); }, 500); }
+    // --- End Chatbot ---
+
+    // --- MAC File Reading ---
+    async function readMacFile() {
+      const input = document.getElementById('macFile'), status = document.getElementById('macFileStatus'), macDest = document.getElementById('macAddress'); if (!input || !status || !macDest) { console.error("MAC read elements missing."); return; } if (!input.files.length) { status.textContent = "Select System_Details.txt"; status.className = "text-xs mt-1 font-medium text-red-600"; return; } const file = input.files[0]; if (file.type !== 'text/plain') { status.textContent="Invalid (.txt only)"; status.className = "text-xs mt-1 font-medium text-red-600"; return; } status.textContent = "Reading..."; status.className = "text-xs mt-1 font-medium text-blue-600"; try { const text = await file.text(); const lines = text.split('\n'); let physicalAddressLine = null; for(let line of lines) { if (line.trim().toLowerCase().startsWith('physical address')) { physicalAddressLine = line; break; } } if (!physicalAddressLine) throw new Error("'Physical Address' line not found."); const match = physicalAddressLine.match(/([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})/); if (!match?.[0]) throw new Error("MAC address format not found."); let mac = match[0].trim().replace(/:/g, '-').toUpperCase(); macDest.value = mac; status.textContent = "✅ Fetched: " + mac; status.className = "text-xs mt-1 font-medium text-green-600"; } catch (err) { console.error("Error reading MAC file:", err); status.textContent = `Error: ${err.message}`; status.className = "text-xs mt-1 font-medium text-red-600"; } finally { input.value = ''; } }
+    // --- End MAC Read ---
+
+    // --- Initial Load ---
+    document.addEventListener('DOMContentLoaded', () => {
+        checkInitialState(); // Checks token, routes user
+        addChatMessage("Ask about WiFi hours, data, devices, plans, or support.", 'bot'); // Init chatbot
+    });
+
+    </script>
+</body>
+</html>
+
