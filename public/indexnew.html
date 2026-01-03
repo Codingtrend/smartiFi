@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartiFI | Banasthali Vidyapith WiFi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .hidden {
+            display: none;
+        }
+        .brand-gradient {
+            background: linear-gradient(90deg, #0d47a1, #1976d2);
+        }
+        .brand-gradient-text {
+            background: linear-gradient(90deg, #0d47a1, #1976d2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        #chatMessages::-webkit-scrollbar { width: 6px; }
+        #chatMessages::-webkit-scrollbar-track { background: #f1f1f1; }
+        #chatMessages::-webkit-scrollbar-thumb { background: #a8a8a8; border-radius: 3px; }
+        #chatMessages::-webkit-scrollbar-thumb:hover { background: #7b7b7b; }
+        #chatbotWindow { transition: transform 0.3s ease-out, opacity 0.3s ease-out; }
+        
+        /* Advanced UI/UX Styles */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .dashboard-card {
+            transition: all 0.3s ease;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .sidebar-link-active {
+            background-color: #4338ca; /* A shade of indigo */
+            color: white;
+        }
+        /* Plan selection style */
+        .plan-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .plan-card-selected {
+            border-color: #1976d2;
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.3);
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div id="app" class="min-h-screen flex flex-col">
+
+        <!-- Header Banner -->
+        <div>
+             <a href="#" onclick="showPage('informatoryPage')" class="cursor-pointer">
+                 <img src="campus2.jpg" alt="Banasthali Vidyapith Banner" class="w-full h-20 object-cover shadow-sm">
+             </a>
+        </div>
+        <div class="h-1.5 brand-gradient"></div>
+
+        <main class="flex-grow">
+            <!-- Informatory Page -->
+            <section id="informatoryPage">
+                 <!-- ... (HTML is the same, no changes needed) ... -->
+                 <div class="relative text-center py-32 md:py-48 overflow-hidden bg-gray-800">
+                     <div class="absolute inset-0 bg-cover bg-center opacity-40 transform scale-110" style="background-image: url('bg.jpg');"></div>
+                    <div class="container mx-auto px-6 relative">
+                         <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4 fade-in-up" style="animation-delay: 0.2s;">Welcome to <span class="brand-gradient-text" style="background: linear-gradient(90deg, #81d4fa, #ffffff); -webkit-background-clip: text;">SmartiFI</span></h1>
+                         <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto mb-8 fade-in-up" style="animation-delay: 0.4s;">The official portal for Banasthali Vidyapith's digital WiFi network. Seamlessly manage your connection.</p>
+                         <div class="fade-in-up" style="animation-delay: 0.6s;">
+                             <button onclick="showPage('authPage')" class="bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition-transform transform hover:scale-105">
+                                 Get Connected
+                             </button>
+                         </div>
+                    </div>
+                 </div>
+                 <div class="py-20 bg-white">
+                     <div class="container mx-auto px-6">
+                         <div class="text-center mb-16">
+                             <h2 class="text-3xl font-bold">A Digital Campus Initiative</h2>
+                             <p class="text-gray-600 mt-2 max-w-2xl mx-auto">Our WiFi system is designed to support your academic journey. Please review the policies below.</p>
+                         </div>
+                         <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                             <!-- Policy Cards -->
+                             <div class="flex items-start space-x-4">
+                                 <div class="flex-shrink-0 brand-gradient text-white rounded-lg p-3">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                 </div>
+                                 <div>
+                                     <h3 class="font-semibold text-lg">Operating Hours</h3>
+                                     <ul class="text-gray-600 mt-1 space-y-1">
+                                         <li><b>Weekdays:</b> 5 AM - 10 AM & 5 PM - 2 AM</li>
+                                         <li><b>Tuesdays & Holidays:</b> 24 Hours</li>
+                                     </ul>
+                                 </div>
+                             </div>
+                             <div class="flex items-start space-x-4">
+                                 <div class="flex-shrink-0 brand-gradient text-white rounded-lg p-3">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 4h4m5.586 4.414a2 2 0 01-2.828 0L7 14.586V11a2 2 0 012-2h4a2 2 0 012 2v3.586l-2.586 2.586z" /></svg>
+                                 </div>
+                                 <div>
+                                     <h3 class="font-semibold text-lg">Subscription Plans</h3>
+                                     <p class="text-gray-600 mt-1">Purchase semester or yearly plans from the finance office for uninterrupted access.</p>
+                                 </div>
+                             </div>
+                             <div class="flex items-start space-x-4">
+                                 <div class="flex-shrink-0 brand-gradient text-white rounded-lg p-3">
+                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                                 </div>
+                                 <div>
+                                     <h3 class="font-semibold text-lg">Content Filtering</h3>
+                                     <p class="text-gray-600 mt-1">To ensure an academic environment, certain non-educational sites are restricted.</p>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+
+                 <!-- FAQ Section -->
+                 <div class="py-20 bg-gray-50">
+                     <div class="container mx-auto px-6 max-w-4xl">
+                         <div class="text-center mb-12">
+                             <h2 class="text-3xl font-bold">Frequently Asked Questions</h2>
+                             <p class="text-gray-600 mt-2">Find quick answers to common questions below.</p>
+                         </div>
+                         <div class="space-y-4" id="faqAccordion">
+                             <div class="bg-white border border-gray-200 rounded-lg shadow-sm">
+                                 <button class="w-full flex justify-between items-center text-left p-5 font-semibold text-lg focus:outline-none" data-faq-toggle="1">
+                                     <span>How many devices can I register?</span>
+                                     <svg class="w-5 h-5 transform transition-transform" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                                 </button>
+                                 <div id="faq-answer-1" class="hidden p-5 pt-0 text-gray-600">
+                                     <p>Each student is permitted to register up to three personal devices (e.g., a laptop, a smartphone, and a tablet).</p>
+                                 </div>
+                             </div>
+                             <div class="bg-white border border-gray-200 rounded-lg shadow-sm">
+                                 <button class="w-full flex justify-between items-center text-left p-5 font-semibold text-lg focus:outline-none" data-faq-toggle="2">
+                                     <span>Is there a data limit?</span>
+                                     <svg class="w-5 h-5 transform transition-transform" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                                 </button>
+                                 <div id="faq-answer-2" class="hidden p-5 pt-0 text-gray-600">
+                                     <p>Yes, the current monthly limit is 100GB of high-speed data per student under the Fair Usage Policy (FUP).</p>
+                                 </div>
+                             </div>
+                             <div class="bg-white border border-gray-200 rounded-lg shadow-sm">
+                                 <button class="w-full flex justify-between items-center text-left p-5 font-semibold text-lg focus:outline-none" data-faq-toggle="3">
+                                     <span>Who should I contact for support?</span>
+                                     <svg class="w-5 h-5 transform transition-transform" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                                 </button>
+                                 <div id="faq-answer-3" class="hidden p-5 pt-0 text-gray-600">
+                                     <p>Use the floating chat assistant for quick questions, or register a complaint in your dashboard for complex issues.</p>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+            </section>
+
+            <!-- Auth Page (Login/Sign Up) -->
+            <section id="authPage" class="hidden py-16 bg-gray-50">
+                <div class="container mx-auto px-6 flex justify-center items-center min-h-[80vh]">
+                    <div class="w-full max-w-md">
+                        <div class="glassmorphism p-8 rounded-2xl shadow-2xl">
+                            <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">Portal Access</h2>
+                            <!-- Re-wired form -->
+                            <form id="authForm" onsubmit="handleAuthForm(event)">
+                                <div class="mb-4">
+                                    <label for="email" class="block text-gray-700 font-medium mb-2">University Email</label>
+                                    <input type="email" id="email" class="w-full px-4 py-2 bg-white/80 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., yourname@banasthali.in" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
+                                    <input type="password" id="password" class="w-full px-4 py-2 bg-white/80 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••" required>
+                                </div>
+                                <div id="reenterPasswordContainer" class="mb-6 hidden">
+                                    <label for="reenter-password" class="block text-gray-700 font-medium mb-2">Re-enter Password</label>
+                                    <input type="password" id="reenter-password" class="w-full px-4 py-2 bg-white/80 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="••••••••">
+                                </div>
+                                
+                                <!-- Toggle Login/Sign Up -->
+                                <div class="text-center mb-4">
+                                    <a href="#" id="authToggle" class="text-sm text-blue-600 hover:underline">Don't have an account? Sign Up</a>
+                                </div>
+
+                                <p id="authError" class="text-red-500 text-sm text-center mb-4 hidden"></p>
+                                <button type="submit" id="authButton" class="w-full brand-gradient text-white font-bold py-3 px-4 rounded-lg hover:opacity-90 transition duration-300 shadow-lg">
+                                    Login
+                                </button>
+                                <div class="mt-6 text-center">
+                                    <a href="#" class="text-sm text-blue-600 hover:underline">Forgot Password?</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- NEW: Email Verification Page -->
+            <section id="emailVerificationPage" class="hidden py-16 bg-gray-50">
+                 <!-- ... (HTML is the same, no changes needed) ... -->
+                 <div class="container mx-auto px-6 flex justify-center items-center min-h-[80vh]">
+                     <div class="w-full max-w-md text-center">
+                         <div class="glassmorphism p-10 rounded-2xl shadow-2xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 brand-gradient-text mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                             <h2 class="text-3xl font-bold text-center mt-6 mb-4 text-gray-800">Check Your Email</h2>
+                             <p class="text-gray-600 mb-8">
+                                A verification link has been sent to <b id="verificationEmailAddress">your-email@banasthali.in</b>. Please click the link in that email to continue.
+                             </p>
+                             <p class="text-sm text-gray-500 mb-4">(This is a simulation. Click the button below to mock-verify your email.)</p>
+                             <button onclick="handleEmailVerification()" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition duration-300 shadow-lg">
+                                 I've Clicked the Link
+                             </button>
+                         </div>
+                     </div>
+                 </div>
+            </section>
+
+            <!-- MAC Address Page (MODIFIED) -->
+            <section id="macAddressPage" class="hidden py-16 bg-gray-50">
+                 <!-- ... (HTML is the same, no changes needed) ... -->
+                 <div class="container mx-auto px-6 flex justify-center items-center min-h-[80vh]">
+                     <div class="w-full max-w-lg">
+                         <div class="glassmorphism p-8 rounded-2xl shadow-2xl">
+                             <h2 class="text-2xl font-bold text-center mb-2 text-gray-800">Device Registration</h2>
+                             <p class="text-center text-gray-600 mb-6">Complete this one-time setup for your current device.</p>
+                             <form id="deviceForm" onsubmit="handleDeviceRegistration(event)">
+                                 <!-- STUDENT ID FIELD RE-ADDED AS REQUESTED -->
+                                 <div class="mb-4">
+                                     <label for="studentId" class="block text-gray-700 font-medium mb-2">Student ID</label>
+                                     <input type="text" id="studentId" class="w-full px-4 py-2 bg-white/80 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Enter your official student ID" required>
+                                 </div>
+                                 <div class="mb-6">
+                                     <label for="macAddress" class="block text-gray-700 font-medium mb-2">Device MAC Address</label>
+                                     <div class="flex items-baseline space-x-2">
+                                         <input type="text" id="macAddress" class="w-full px-4 py-2 bg-white/80 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="e.g., A1-B2-C3-D4-E5-F6" required>
+                                         <!-- ================= MAC Upload Feature ================= -->
+<div class="mac-upload-section" style="margin-top:20px;">
+  <h3>Fetch MAC Address Automatically</h3>
+  <p>Download and run this file to get your MAC address: 
+     <a href="./downloads/get_system_info.bat" download>Download MAC Fetcher (.bat)</a></p>
+
+  <input type="file" id="macFile" accept=".txt" />
+  <button type="button" onclick="readMacFile()">Upload System_Details.txt</button>
+  <p id="macFileStatus" style="font-weight:600;color:#1f6feb;"></p>
+</div>
+<!-- ======================================================= -->
+
+                                         <a href="#" onclick="showMacHelpModal(event)" class="text-sm text-blue-600 hover:underline whitespace-nowrap">How to find this?</a>
+                                     </div>
+                                 </div>
+                                  <p id="deviceFormError" class="text-red-500 text-sm text-center mb-4 hidden"></p>
+                                 <button type="submit" class="w-full brand-gradient text-white font-bold py-3 px-4 rounded-lg hover:opacity-90 transition duration-300 shadow-lg">
+                                     Submit Device
+                                 </button>
+                             </form>
+                         </div>
+                     </div>
+                 </div>
+            </section>
+            
+            <!-- NEW: Student Details & Plan Selection Page -->
+            <section id="studentDetailsPage" class="hidden py-16 bg-gray-50">
+                 <!-- ... (HTML is the same, no changes needed) ... -->
+                 <div class="container mx-auto px-6 flex justify-center items-center min-h-[80vh]">
+                     <div class="w-full max-w-2xl">
+                         <div class="glassmorphism p-8 rounded-2xl shadow-2xl">
+                             <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">Confirm Your Details</h2>
+                             
+                             <!-- Student Details -->
+                             <div class="bg-white/50 rounded-lg p-6 mb-8 border border-gray-200">
+                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                     <div>
+                                         <p class="text-sm text-gray-600">Student Name</p>
+                                         <p id="detailsStudentName" class="font-semibold text-lg"></p>
+                                     </div>
+                                     <div>
+                                         <p class="text-sm text-gray-600">Student ID</p>
+                                         <p id="detailsStudentId" class="font-semibold text-lg"></p>
+                                     </div>
+                                     <div class="md:col-span-2">
+                                         <p class="text-sm text-gray-600">Course</p>
+                                         <p id="detailsStudentCourse" class="font-semibold text-lg"></p>
+                                     </div>
+                                 </div>
+                             </div>
+
+                             <!-- Plan Selection -->
+                             <form id="planForm" onsubmit="handlePlanSelection(event)">
+                                <h3 class="text-2xl font-bold text-center mb-6 text-gray-800">Select Your Plan</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                    <label class="plan-card block border-2 border-gray-300 rounded-lg p-5 text-center plan-card">
+                                        <input type="radio" name="plan" value="Semester" class="sr-only" onchange="updatePlanSelection()">
+                                        <span class="text-2xl font-bold brand-gradient-text">Semester Plan</span>
+                                        <span class="block text-gray-600 mt-2">Ideal for one semester of access.</span>
+                                    </label>
+                                    <label class="plan-card block border-2 border-gray-300 rounded-lg p-5 text-center plan-card">
+                                        <input type="radio" name="plan" value="Annual" class="sr-only" onchange="updatePlanSelection()">
+                                        <span class="text-2xl font-bold brand-gradient-text">Annual Plan</span>
+                                        <span class="block text-gray-600 mt-2">Best value for the full academic year.</span>
+                                    </label>
+                                </div>
+                                <p id="planError" class="text-red-500 text-sm text-center mb-4 hidden"></p>
+                                <button type="submit" class="w-full brand-gradient text-white font-bold py-3 px-4 rounded-lg hover:opacity-90 transition duration-300 shadow-lg">
+                                    Confirm & Enter Dashboard
+                                </button>
+                             </form>
+                         </div>
+                     </div>
+                 </div>
+            </section>
+
+            <!-- Student Dashboard Page -->
+            <section id="dashboardPage" class="hidden">
+                <!-- ... (HTML is the same, no changes needed) ... -->
+                <div class="flex min-h-screen bg-gray-100">
+                    <aside id="sidebar" class="w-64 bg-gray-900/80 backdrop-blur-lg text-white flex-shrink-0 flex flex-col fixed inset-y-0 left-0 z-20 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out">
+                        <div class="p-5 border-b border-gray-700/50">
+                            <h2 class="text-2xl font-bold text-white">SmartiFI</h2>
+                            <span class="text-sm text-gray-400">Student Portal</span>
+                        </div>
+                        <nav id="student-sidebar-nav" class="flex-grow p-3">
+                            <a href="#" onclick="showStudentDashboardSection('student-home', this)" class="sidebar-link-active flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="#" onclick="showStudentDashboardSection('student-account', this)" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                <span>Your Account</span>
+                            </a>
+                             <a href="#" onclick="showStudentDashboardSection('student-speed-test', this)" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                                <span>Speed Test</span>
+                            </a>
+                            <a href="#" onclick="showStudentDashboardSection('student-complaint-center', this)" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-colors">
+                               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V4a2 2 0 012-2h8a2 2 0 012 2v4z" /></svg>
+                                <span>Complaint Center</span>
+                            </a>
+                        </nav>
+                        <div class="p-5 mt-auto border-t border-gray-700/50">
+                             <a href="#" onclick="logout()" class="flex items-center gap-3 p-3 rounded-lg bg-red-600/80 hover:bg-red-600 transition-colors">
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                                 <span>Logout</span>
+                             </a>
+                        </div>
+                    </aside>
+
+                    <div class="flex-1 flex flex-col">
+                         <header class="bg-white/80 backdrop-blur-lg shadow-md p-4 flex justify-between items-center md:hidden sticky top-0 z-10">
+                             <h2 class="text-xl font-bold brand-gradient-text">Student Dashboard</h2>
+                             <button id="hamburger-menu" class="text-gray-700 focus:outline-none">
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                             </button>
+                         </header>
+                        
+                        <div class="p-6 md:p-8 overflow-y-auto">
+                            <!-- Dashboard Home -->
+                            <div id="student-home" class="fade-in-up">
+                                <h1 class="text-4xl font-bold text-gray-800 mb-6">Welcome, <span id="dashboardUsername" class="brand-gradient-text"></span>!</h1>
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                     <div class="glassmorphism p-6 rounded-2xl shadow-lg dashboard-card">
+                                         <div class="flex items-center gap-4">
+                                             <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" /></svg></div>
+                                             <div><p class="text-gray-600">Student ID</p><p id="dashboardStudentId" class="font-bold text-xl"></p></div>
+                                          </div>
+                                     </div>
+                                      <div class="glassmorphism p-6 rounded-2xl shadow-lg dashboard-card">
+                                          <div class="flex items-center gap-4">
+                                              <div class="bg-green-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7l-4 4 4 4m8-8l4 4-4 4" /></svg></div>
+                                              <div><p class="text-gray-600">Device Status</p><p class="font-bold text-xl text-green-600">Connected</p></div>
+                                           </div>
+                                      </div>
+                                      <div class="glassmorphism p-6 rounded-2xl shadow-lg dashboard-card">
+                                           <div class="flex items-center gap-4">
+                                             <div class="bg-yellow-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+                                             <div><p class="text-gray-600">Pending Complaints</p><p id="pending-complaints-count" class="font-bold text-xl">0</p></div>
+                                          </div>
+                                      </div>
+                                </div>
+                            </div>
+
+                            <!-- Account Details -->
+                            <div id="student-account" class="hidden fade-in-up">
+                                <h1 class="text-4xl font-bold text-gray-800 mb-6">Your Account</h1>
+                                <div class="glassmorphism p-6 rounded-2xl shadow-lg max-w-2xl">
+                                    <div class="space-y-6">
+                                        <div><p class="text-gray-600 text-sm">Student ID</p><p id="accountStudentId" class="font-semibold text-xl"></p></div>
+                                        <div><p class="text-gray-600 text-sm">Registered Email</p><p id="accountUserEmail" class="font-semibold text-xl"></p></div>
+                                        <div><p class="text-gray-600 text-sm">Connected Device MAC</p><p id="accountMacAddress" class="font-semibold text-xl font-mono"></p></div>
+                                        <div><p class="text-gray-600 text-sm">Selected Plan</p><p id="accountPlan" class="font-semibold text-xl"></p></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Speed Test -->
+                            <div id="student-speed-test" class="hidden fade-in-up">
+                                <!-- ... (HTML is the same, no changes needed) ... -->
+                                <h1 class="text-4xl font-bold text-gray-800 mb-6">Internet Status & Usage</h1>
+                                <div class="glassmorphism p-8 rounded-2xl shadow-lg grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                    <div class="flex flex-col items-center">
+                                        <p class="font-semibold mb-3 text-lg">Monthly Data Usage</p>
+                                        <div class="relative w-40 h-40">
+                                            <svg class="w-full h-full" viewBox="0 0 100 100">
+                                                <circle class="text-gray-300/50" stroke-width="10" stroke="currentColor" fill="transparent" r="45" cx="50" cy="50" />
+                                                <circle id="dataUsageCircle" class="progress-ring-circle text-blue-600" stroke-width="10" stroke-linecap="round" stroke="currentColor" fill="transparent" r="45" cx="50" cy="50"/>
+                                            </svg>
+                                            <div class="absolute inset-0 flex items-center justify-center">
+                                                <span id="dataUsageText" class="text-3xl font-bold"></span>
+                                            </div>
+                                        </div>
+                                        <p class="text-sm text-gray-500 mt-3">of 100GB used</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="font-semibold mb-3 text-lg">Live Speed</p>
+                                        <div class="text-3xl font-bold space-x-6">
+                                            <span>↓ <span id="downloadSpeed">--</span></span>
+                                            <span>↑ <span id="uploadSpeed">--</span></span>
+                                        </div>
+                                        <p class="text-sm text-gray-500 mb-4">Mbps</p>
+                                        <button onclick="runSpeedTest()" id="speedTestButton" class="mt-4 w-full bg-gray-700 text-white font-semibold py-3 px-4 rounded-lg hover:bg-gray-800 transition duration-300 shadow-lg">
+                                            Run Speed Test
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Complaint Center -->
+                             <div id="student-complaint-center" class="hidden fade-in-up">
+                                 <!-- ... (HTML is the same, no changes needed) ... -->
+                                 <h1 class="text-4xl font-bold text-gray-800 mb-6">Complaint Center</h1>
+                                 <div class="glassmorphism p-6 rounded-2xl shadow-lg">
+                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                         <div>
+                                             <h4 class="font-medium text-lg mb-3">Register a New Complaint</h4>
+                                             <form id="complaintForm" onsubmit="handleComplaintSubmit(event)">
+                                                 <textarea id="complaintText" class="w-full h-28 p-3 bg-white/80 border border-gray-300 rounded-lg mb-3 focus:ring-2 focus:ring-blue-500" placeholder="Describe your issue in detail..." required></textarea>
+                                                 <button type="submit" class="w-full bg-red-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-700 shadow-lg">Submit Complaint</button>
+                                             </form>
+                                         </div>
+                                         <div>
+                                             <h4 class="font-medium text-lg mb-3">Your Complaint History</h4>
+                                             <div id="complaintList" class="space-y-3 max-h-48 overflow-y-auto"></div>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Admin Dashboard Page -->
+            <section id="adminDashboardPage" class="hidden">
+                 <!-- ... (HTML is the same, no changes needed) ... -->
+                 <div class="flex h-screen bg-gray-100">
+                     <aside class="w-64 bg-gray-900/80 backdrop-blur-lg text-white flex-shrink-0 flex flex-col fixed h-full z-20 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out">
+                         <div class="p-5 border-b border-gray-700/50">
+                             <h2 class="text-2xl font-bold text-indigo-400">SmartiFI</h2>
+                             <span class="text-sm text-gray-400">Admin Panel</span>
+                         </div>
+                        <nav class="flex-grow p-3">
+                            <a href="#" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" /></svg>
+                                <span>Overview</span>
+                            </a>
+                            <a href="#" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-colors">
+                               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V4a2 2 0 012-2h8a2 2 0 012 2v4z" /></svg>
+                                <span>Manage Complaints</span>
+                            </a>
+                            <a href="#" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-colors">
+                               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21a6 6 0 00-9 5.197M15 21a6 6 0 016 0v1h-6" /></svg>
+                                <span>User Management</span>
+                            </a>
+                        </nav>
+                         <div class="p-5 mt-auto border-t border-gray-700/50">
+                             <a href="#" onclick="logout()" class="flex items-center gap-3 p-3 rounded-lg bg-red-600/80 hover:bg-red-600 transition-colors">
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                                 <span>Logout</span>
+                             </a>
+                         </div>
+                     </aside>
+                      <div class="flex-1 p-8">
+                         <h1 class="text-4xl font-bold">Admin Dashboard</h1>
+                         <!-- Admin content goes here -->
+                     </div>
+                 </div>
+            </section>
+        </main>
+
+        <!-- MAC Address Help Modal -->
+        <div id="macHelpModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+             <!-- ... (HTML is the same, no changes needed) ... -->
+            <div class="bg-white p-8 rounded-lg shadow-2xl max-w-lg w-full relative">
+                <button onclick="closeMacHelpModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+                <h3 class="text-2xl font-bold mb-4">How to Find Your MAC Address</h3>
+                <div class="space-y-4 text-gray-700">
+                    <p><strong>Windows:</strong> Open Command Prompt, type `ipconfig /all`, and look for the "Physical Address".</p>
+                    <p><strong>macOS:</strong> Go to System Preferences > Network > Advanced > Hardware. The MAC Address is listed there.</p>
+                    <p><strong>Android/iOS:</strong> Go to Settings > About Phone/Device > Status. The "Wi-Fi MAC address" will be visible.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Chatbot -->
+        <div class="fixed bottom-5 right-5 z-40">
+             <!-- ... (HTML is the same, no changes needed) ... -->
+            <button id="chatbotToggle" class="brand-gradient text-white w-16 h-16 rounded-full shadow-xl flex items-center justify-center">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+Not what you were looking for? Regenerate
+            </button>
+            <div id="chatbotWindow" class="hidden absolute bottom-20 right-0 w-80 bg-white rounded-xl shadow-2xl transform scale-95 opacity-0">
+                <div class="brand-gradient text-white p-4 rounded-t-xl">
+                    <h4 class="font-bold">SmartiFI Assistant</h4>
+                </div>
+                <div id="chatMessages" class="p-4 h-64 overflow-y-auto"></div>
+                <div class="p-3 border-t">
+                    <input type="text" id="chatInput" class="w-full border rounded-lg px-3 py-2" placeholder="Ask a question...">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 
+    ================================================================
+    NEW JAVASCRIPT LOGIC - ALL MOCK_DB REMOVED
+    This section connects to your node server.js
+    ================================================================
+    -->
+    <script>
+    const API_URL = 'http://localhost:4000/api'; // Your server's URL
+    let currentUserState = null; // Holds the logged-in user's data
+
+    // --- Helper function for API calls ---
+    async function apiRequest(endpoint, method = 'GET', body = null) {
+        const token = localStorage.getItem('smartifi-token');
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        
+        if (token) {
+            headers.append('Authorization', `Bearer ${token}`);
+        }
+
+        const config = {
+            method: method,
+            headers: headers,
+        };
+
+        if (body) {
+            config.body = JSON.stringify(body);
+        }
+
+        try {
+            const response = await fetch(`${API_URL}${endpoint}`, config);
+            const data = await response.json();
+            
+            if (!response.ok) {
+                // If API returns an error (4xx, 5xx), throw it to be caught
+                throw new Error(data.message || 'An error occurred');
+            }
+            return data; // This is the successful JSON payload
+        } catch (err) {
+            console.error('API Error:', err.message);
+            throw err; // Re-throw to be handled by the calling function
+        }
+    }
+
+
+    function showPage(pageId) {
+        document.querySelectorAll('main > section').forEach(section => {
+            section.classList.add('hidden');
+        });
+        const page = document.getElementById(pageId);
+        if (page) {
+            page.classList.remove('hidden');
+            if (pageId.includes('dashboard')) {
+                document.querySelector('body').classList.add('overflow-hidden');
+            } else {
+                 document.querySelector('body').classList.remove('overflow-hidden');
+            }
+        }
+    }
+
+    // --- NEW AUTH LOGIC ---
+
+    // Toggle between Login and Sign Up mode on the auth page
+    let isLoginMode = true;
+    const authToggle = document.getElementById('authToggle');
+    const reenterPasswordContainer = document.getElementById('reenterPasswordContainer');
+    const authButton = document.getElementById('authButton');
+
+    authToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        isLoginMode = !isLoginMode;
+        if (isLoginMode) {
+            authToggle.textContent = "Don't have an account? Sign Up";
+            authButton.textContent = "Login";
+            reenterPasswordContainer.classList.add('hidden');
+            document.getElementById('reenter-password').required = false;
+        } else {
+            authToggle.textContent = "Already have an account? Login";
+            authButton.textContent = "Sign Up";
+            reenterPasswordContainer.classList.remove('hidden');
+            document.getElementById('reenter-password').required = true;
+        }
+    });
+
+    // Handle both Login and Sign Up
+    async function handleAuthForm(event) {
+        event.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const authError = document.getElementById('authError');
+        authError.classList.add('hidden');
+        
+        // --- SIGN UP LOGIC ---
+        if (!isLoginMode) {
+            const reenterPassword = document.getElementById('reenter-password').value;
+            if (password !== reenterPassword) {
+                authError.textContent = "Passwords do not match.";
+                authError.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                // This corresponds to /api/auth/signup in server.js
+                const data = await apiRequest('/auth/signup', 'POST', { email, password });
+                
+                // Save token and go to verification page
+                localStorage.setItem('smartifi-token', data.token);
+                document.getElementById('verificationEmailAddress').textContent = email;
+                showPage('emailVerificationPage');
+
+            } catch (err) {
+                authError.textContent = err.message;
+                authError.classList.remove('hidden');
+            }
+        } 
+        // --- LOGIN LOGIC ---
+        else {
+            try {
+                // This corresponds to /api/auth/login in server.js
+                const data = await apiRequest('/auth/login', 'POST', { email, password });
+                
+                // Save token and route user to the correct page
+                localStorage.setItem('smartifi-token', data.token);
+                routeUser(data.user); // data.user comes from the login response
+
+            } catch (err) {
+                authError.textContent = err.message;
+                authError.classList.remove('hidden');
+            }
+        }
+    }
+
+    // NEW: Function to check user's status and send them to the right page
+    function routeUser(user) {
+        currentUserState = user; // Save user data globally
+
+        if (user.role === 'admin') {
+            showPage('adminDashboardPage');
+        } else {
+            // Student flow: check registration steps
+            if (!user.verified) {
+                document.getElementById('verificationEmailAddress').textContent = user.email;
+                showPage('emailVerificationPage');
+            } else if (!user.student_id || !user.mac_address) {
+                showPage('macAddressPage');
+            } else if (!user.plan) {
+                // User has registered device, now needs to select plan
+                // We need to fetch their *official* details to show them
+                populateAndShowStudentDetails(user); 
+            } else {
+                // All steps complete
+                showStudentDashboard(user); 
+            }
+        }
+    }
+    
+    // NEW: Check for token on page load
+    async function checkInitialState() {
+        const token = localStorage.getItem('smartifi-token');
+        if (token) {
+            try {
+                // Token exists, let's see if it's valid by fetching user data
+                // This corresponds to /api/user/me in server.js
+                const data = await apiRequest('/user/me'); 
+                routeUser(data.user); // Send user to the right page
+            } catch (err) {
+                // Token is invalid or expired
+                localStorage.removeItem('smartifi-token');
+                showPage('informatoryPage');
+            }
+        } else {
+            showPage('informatoryPage');
+        }
+    }
+
+    // Mock email verification step
+    // This corresponds to /api/auth/verify in server.js
+    async function handleEmailVerification() {
+        try {
+            await apiRequest('/auth/verify', 'POST');
+            // Verification successful, move to next step
+            showPage('macAddressPage'); 
+        } catch(err) {
+            alert('Verification failed. Please try logging in again.');
+        }
+    }
+
+    // MODIFIED: Device registration
+    // This corresponds to /api/device/register in server.js
+    async function handleDeviceRegistration(event) {
+        event.preventDefault();
+        const studentId = document.getElementById('studentId').value;
+        const macAddress = document.getElementById('macAddress').value;
+        const errorEl = document.getElementById('deviceFormError');
+        
+        errorEl.classList.add('hidden');
+
+        const macRegex = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
+        if(!macRegex.test(macAddress)) {
+            errorEl.textContent = "Invalid MAC Address format. (e.g., A1-B2-C3-D4-E5-F6)";
+            errorEl.classList.remove('hidden');
+            return;
+        }
+
+        try {
+            await apiRequest('/device/register', 'POST', { studentId, macAddress });
+            
+            // Success! Fetch the user's *official* details to show on the plan page
+            // We need to fetch the full user object again to get the new student_id
+            const data = await apiRequest('/user/me');
+            currentUserState = data.user;
+            populateAndShowStudentDetails(data.user);
+
+        } catch (err) {
+            errorEl.textContent = err.message;
+            errorEl.classList.remove('hidden');
+        }
+    }
+
+    // NEW: Fetch details from "university DB" (via our server) and show plan page
+    // Note: server.js doesn't have an endpoint for university_records *yet*.
+    // For now, we will just use the data from the /user/me endpoint.
+    // We will add a fetch to university_records later if needed.
+    function populateAndShowStudentDetails(user) {
+        // For now, we only have student_id. The server needs to be updated
+        // to also return the 'name' and 'course' from the university_records table.
+        // Let's assume for now the /user/me endpoint will be expanded to include this.
+        // ---
+        // Let's simplify: We'll just use the data we have.
+        // Your server.js /device/register endpoint *already* verifies the studentId.
+        // So we can trust the user.student_id is correct.
+        
+        document.getElementById('detailsStudentName').textContent = user.email.split('@')[0]; // Placeholder
+        document.getElementById('detailsStudentId').textContent = user.student_id;
+        document.getElementById('detailsStudentCourse').textContent = "N/A (Pending DB update)"; // Placeholder
+        
+        showPage('studentDetailsPage');
+    }
+    
+    // NEW: Handle plan selection
+    // This corresponds to /api/plan/select in server.js
+    async function handlePlanSelection(event) {
+        event.preventDefault();
+        const planError = document.getElementById('planError');
+        const selectedPlan = document.querySelector('input[name="plan"]:checked');
+        
+        if (selectedPlan) {
+            planError.classList.add('hidden');
+            try {
+                await apiRequest('/plan/select', 'POST', { plan: selectedPlan.value });
+                
+                // Fetch the final user state
+                const data = await apiRequest('/user/me');
+                currentUserState = data.user;
+                
+                // Final step: Go to dashboard
+                showStudentDashboard(currentUserState);
+
+            } catch (err) {
+                planError.textContent = err.message;
+                planError.classList.remove('hidden');
+            }
+        } else {
+            planError.textContent = 'Please select a plan to continue.';
+            planError.classList.remove('hidden');
+        }
+    }
+
+    // NEW: Helper for plan selection UI
+    function updatePlanSelection() {
+        document.querySelectorAll('.plan-card').forEach(card => {
+            card.classList.remove('plan-card-selected');
+        });
+        const selectedCard = document.querySelector('input[name="plan"]:checked').closest('.plan-card');
+        if (selectedCard) {
+            selectedCard.classList.add('plan-card-selected');
+        }
+    }
+
+
+    function showStudentDashboard(user) {
+        showPage('dashboardPage');
+        // Populate dashboard with current user's data
+        document.getElementById('dashboardUsername').textContent = user.email.split('@')[0];
+        document.getElementById('dashboardStudentId').textContent = user.student_id;
+        
+        // Populate account page
+        document.getElementById('accountStudentId').textContent = user.student_id;
+        document.getElementById('accountUserEmail').textContent = user.email;
+        document.getElementById('accountMacAddress').textContent = user.mac_address;
+        document.getElementById('accountPlan').textContent = user.plan;
+        
+        updateDataUsage(user.data_usage || 0);
+        // We need to implement complaint fetching
+        updateComplaintUI(); 
+    }
+    
+    function showStudentDashboardSection(sectionId, element) {
+        document.querySelectorAll('#dashboardPage .fade-in-up').forEach(sec => sec.classList.add('hidden'));
+        document.getElementById(sectionId).classList.remove('hidden');
+        
+        document.querySelectorAll('#student-sidebar-nav a').forEach(link => link.classList.remove('sidebar-link-active'));
+        element.classList.add('sidebar-link-active');
+        
+        if (window.innerWidth < 768) {
+            document.getElementById('sidebar').classList.add('-translate-x-full');
+        }
+    }
+    
+    function logout() {
+        currentUserState = null;
+        localStorage.removeItem('smartifi-token');
+        document.getElementById('authForm').reset();
+        showPage('informatoryPage');
+    }
+    
+    // Hamburger Menu
+    document.getElementById('hamburger-menu').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('-translate-x-full');
+    });
+
+    // FAQ Accordion
+    document.getElementById('faqAccordion').addEventListener('click', function(e) {
+        const toggleButton = e.target.closest('[data-faq-toggle]');
+        if (!toggleButton) return;
+        
+        const answerId = `faq-answer-${toggleButton.dataset.faqToggle}`;
+        const answerEl = document.getElementById(answerId);
+        const icon = toggleButton.querySelector('svg');
+        
+        answerEl.classList.toggle('hidden');
+        icon.classList.toggle('rotate-180');
+    });
+
+    // MAC Address Modal
+    function showMacHelpModal(event) {
+        event.preventDefault();
+        document.getElementById('macHelpModal').classList.remove('hidden');
+    }
+    function closeMacHelpModal() {
+        document.getElementById('macHelpModal').classList.add('hidden');
+    }
+
+    // Speed Test Logic (Remains the same, as it's client-side)
+    function runSpeedTest() {
+        const button = document.getElementById('speedTestButton');
+        button.disabled = true;
+        button.textContent = 'Testing...';
+        
+        const downloadSpeedEl = document.getElementById('downloadSpeed');
+        const uploadSpeedEl = document.getElementById('uploadSpeed');
+        
+        downloadSpeedEl.textContent = '...';
+        uploadSpeedEl.textContent = '...';
+
+        setTimeout(() => {
+            const download = (Math.random() * (95 - 40) + 40).toFixed(2);
+            const upload = (Math.random() * (50 - 15) + 15).toFixed(2);
+            
+            downloadSpeedEl.textContent = download;
+            uploadSpeedEl.textContent = upload;
+            
+            button.disabled = false;
+            button.textContent = 'Run Speed Test Again';
+        }, 2000);
+    }
+    
+    function updateDataUsage(usage) {
+        const circle = document.getElementById('dataUsageCircle');
+        const radius = circle.r.baseVal.value;
+        const circumference = 2 * Math.PI * radius;
+        const offset = circumference - (usage / 100) * circumference;
+
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        circle.style.strokeDashoffset = offset;
+        document.getElementById('dataUsageText').textContent = `${usage}GB`;
+    }
+
+    // Complaint Center
+    // TODO: This needs to be wired up to the server
+    function handleComplaintSubmit(event) {
+        event.preventDefault();
+        const text = document.getElementById('complaintText').value;
+        alert('Submitting complaints to the server is not implemented yet.');
+        // const newComplaint = {
+        //     id: Date.now(),
+        //     text,
+        //     status: 'Pending'
+        // };
+        // MOCK_DB.complaints[currentUser.email].push(newComplaint);
+        // document.getElementById('complaintForm').reset();
+        // updateComplaintUI();
+    }
+    
+    function updateComplaintUI() {
+        const list = document.getElementById('complaintList');
+        list.innerHTML = `<p class="text-gray-500">Fetching complaints is not implemented yet.</p>`;
+        
+        // const userComplaints = MOCK_DB.complaints[currentUser.email] || [];
+        
+        // if (userComplaints.length === 0) {
+        //     list.innerHTML = `<p class="text-gray-500">No complaints filed.</p>`;
+        // } else {
+        //     userComplaints.forEach(c => {
+        //         const statusColor = c.status === 'Pending' ? 'text-yellow-600' : 'text-green-600';
+        //         const item = document.createElement('div');
+        //         item.className = 'p-3 bg-gray-100/50 rounded-lg';
+        //         item.innerHTML = `<p>${c.text}</p><p class="text-sm font-bold ${statusColor}">${c.status}</p>`;
+        //         list.appendChild(item);
+        //     });
+        // }
+        // document.getElementById('pending-complaints-count').textContent = userComplaints.filter(c => c.status === 'Pending').length;
+    }
+    
+    // Chatbot Logic (Remains the same, as it's client-side)
+    const chatbotToggle = document.getElementById('chatbotToggle');
+    const chatbotWindow = document.getElementById('chatbotWindow');
+    const chatInput = document.getElementById('chatInput');
+    
+    chatbotToggle.addEventListener('click', () => {
+         const isHidden = chatbotWindow.classList.contains('hidden');
+         if (isHidden) {
+             chatbotWindow.classList.remove('hidden');
+             setTimeout(() => chatbotWindow.classList.remove('scale-95', 'opacity-0'), 10);
+         } else {
+             chatbotWindow.classList.add('scale-95', 'opacity-0');
+             setTimeout(() => chatbotWindow.classList.add('hidden'), 300);
+         }
+    });
+
+    chatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && this.value.trim() !== '') {
+            addChatMessage(this.value, 'user');
+            handleBotResponse(this.value);
+            this.value = '';
+        }
+    });
+    
+    function addChatMessage(message, sender) {
+        const messagesContainer = document.getElementById('chatMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.textContent = message;
+        messageDiv.className = sender === 'user' ? 'text-right my-2 p-2 bg-blue-100 rounded-lg' : 'text-left my-2 p-2 bg-gray-200 rounded-lg';
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+    
+    function handleBotResponse(query) {
+         setTimeout(() => {
+             let response = "I'm not sure how to answer that. Try asking about 'WiFi hours' or 'data limit'.";
+             if (query.toLowerCase().includes('hour')) {
+                 response = "WiFi is available from 5 AM to 10 AM and 5 PM to 2 AM on weekdays, and 24 hours on Tuesdays & holidays.";
+             } else if (query.toLowerCase().includes('limit')) {
+                 response = "The monthly data limit is 100GB per student under the Fair Usage Policy.";
+             } else if (query.toLowerCase().includes('device')) {
+                 response = "You can register up to three personal devices.";
+             }
+             addChatMessage(response, 'bot');
+         }, 1000);
+    }
+    
+    // Initial state
+    checkInitialState(); // Run the check when the page loads
+    addChatMessage("Hello! How can I help you today?", 'bot');
+async function readMacFile() {
+  const fileInput = document.getElementById('macFile');
+  const status = document.getElementById('macFileStatus');
+  
+  if (!fileInput.files.length) {
+    status.textContent = "Please select the System_Details.txt file first.";
+    status.style.color = "red";
+    return;
+  }
+
+  const file = fileInput.files[0];
+  const text = await file.text();
+
+  // find MAC line
+  let macLine = text.split('\n').find(line => line.toLowerCase().includes('mac address'));
+  if (!macLine) {
+    status.textContent = "MAC address not found in the file.";
+    status.style.color = "red";
+    return;
+  }
+
+  const mac = macLine.split(':').slice(1).join(':').trim();
+  const macInput = document.getElementById('macAddress');
+  if (macInput) macInput.value = mac;
+  
+  status.textContent = "✅ MAC Address fetched successfully: " + mac;
+  status.style.color = "green";
+}
+
+    </script>
+</body>
+</html>
