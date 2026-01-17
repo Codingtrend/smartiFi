@@ -425,6 +425,8 @@
         </div>
 
     </div>
+    <!-- LibreSpeed Engine (STEP 1) -->
+<script src="https://cdn.jsdelivr.net/gh/librespeed/speedtest/speedtest.min.js"></script>
 
     <script>
     // Mock user database
@@ -595,39 +597,52 @@
     }
 
     // Speed Test Logic
-    function runSpeedTest() {
-        const button = document.getElementById('speedTestButton');
-        button.disabled = true;
-        button.textContent = 'Testing...';
-        
-        const downloadSpeedEl = document.getElementById('downloadSpeed');
-        const uploadSpeedEl = document.getElementById('uploadSpeed');
-        
-        downloadSpeedEl.textContent = '...';
-        uploadSpeedEl.textContent = '...';
+    let speedTestInstance = null;
 
-        setTimeout(() => {
-            const download = (Math.random() * (95 - 40) + 40).toFixed(2);
-            const upload = (Math.random() * (50 - 15) + 15).toFixed(2);
-            
-            downloadSpeedEl.textContent = download;
-            uploadSpeedEl.textContent = upload;
-            
-            button.disabled = false;
-            button.textContent = 'Run Speed Test Again';
-        }, 2000);
-    }
-    
-    function updateDataUsage(usage) {
-        const circle = document.getElementById('dataUsageCircle');
-        const radius = circle.r.baseVal.value;
-        const circumference = 2 * Math.PI * radius;
-        const offset = circumference - (usage / 100) * circumference;
+   async function runSpeedTest() {
+    const button = document.getElementById("speedTestButton");
+    const downloadEl = document.getElementById("downloadSpeed");
+    const uploadEl = document.getElementById("uploadSpeed");
 
-        circle.style.strokeDasharray = `${circumference} ${circumference}`;
-        circle.style.strokeDashoffset = offset;
-        document.getElementById('dataUsageText').textContent = `${usage}GB`;
-    }
+    button.disabled = true;
+    button.textContent = "Testing...";
+    downloadEl.textContent = "--";
+    uploadEl.textContent = "--";
+
+    /* ---------- DOWNLOAD TEST ---------- */
+    const downloadUrl = "https://speed.cloudflare.com/__down?bytes=25000000"; // ~25MB
+    const startTime = performance.now();
+
+    const response = await fetch(downloadUrl, { cache: "no-store" });
+    await response.arrayBuffer();
+
+    const endTime = performance.now();
+    const duration = (endTime - startTime) / 1000; // seconds
+    const bitsLoaded = 25000000 * 8;
+    const downloadMbps = (bitsLoaded / duration / 1024 / 1024).toFixed(2);
+
+    downloadEl.textContent = downloadMbps;
+
+    /* ---------- UPLOAD TEST ---------- */
+    const uploadData = new Uint8Array(5000000); // ~5MB
+    const uploadStart = performance.now();
+
+    await fetch("https://speed.cloudflare.com/__up", {
+        method: "POST",
+        body: uploadData
+    });
+
+    const uploadEnd = performance.now();
+    const uploadDuration = (uploadEnd - uploadStart) / 1000;
+    const uploadBits = 5000000 * 8;
+    const uploadMbps = (uploadBits / uploadDuration / 1024 / 1024).toFixed(2);
+
+    uploadEl.textContent = uploadMbps;
+
+    button.disabled = false;
+    button.textContent = "Run Speed Test Again";
+}
+
 
     // Complaint Center
     function handleComplaintSubmit(event) {

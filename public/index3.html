@@ -514,7 +514,7 @@
 
     <!-- ======================= JAVASCRIPT ======================= -->
     <script>
-    const API_URL = 'http://localhost:4000/api'; // Server URL
+    const API_URL = 'http://localhost:5000/api'; // Server URL
     let currentUserState = null; // Holds logged-in user data
 
     // --- API Request Helper ---
@@ -917,20 +917,51 @@
     document.addEventListener('keydown', (e) => { if (e.key === "Escape" && macModal && !macModal.classList.contains('hidden')) closeMacHelpModal(); });
 
 
-    // Speed Test
-    function runSpeedTest() {
-        const btn = document.getElementById('speedTestButton'), dl = document.getElementById('downloadSpeed'), ul = document.getElementById('uploadSpeed'); if(!btn || !dl || !ul) return;
-        btn.disabled = true; btn.textContent = 'Testing...'; dl.textContent = '...'; ul.textContent = '...';
-        setTimeout(() => { dl.textContent = (Math.random() * 55 + 40).toFixed(1); ul.textContent = (Math.random() * 35 + 15).toFixed(1); btn.disabled = false; btn.textContent = 'Run Test Again'; }, 1200);
-    }
+// Speed Test Logic
+   async function runSpeedTest() {
+    const button = document.getElementById("speedTestButton");
+    const downloadEl = document.getElementById("downloadSpeed");
+    const uploadEl = document.getElementById("uploadSpeed");
 
-    // Data Usage Circle
-    function updateDataUsage(usage) {
-         const circle = document.getElementById('dataUsageCircle'), textEl = document.getElementById('dataUsageText'); if (!circle || !textEl) return;
-        const r = circle.r.baseVal.value, c = 2 * Math.PI * r, pct = Math.max(0, Math.min(100, usage || 0)) / 100; const offset = c - pct * c;
-        circle.style.strokeDasharray=`${c} ${c}`; circle.style.strokeDashoffset=offset; textEl.textContent = `${(usage || 0).toFixed(1)}GB`;
-    }
+    button.disabled = true;
+    button.textContent = "Testing...";
+    downloadEl.textContent = "--";
+    uploadEl.textContent = "--";
 
+    /* ---------- DOWNLOAD TEST ---------- */
+    const downloadUrl = "https://speed.cloudflare.com/__down?bytes=25000000"; // ~25MB
+    const startTime = performance.now();
+
+    const response = await fetch(downloadUrl, { cache: "no-store" });
+    await response.arrayBuffer();
+
+    const endTime = performance.now();
+    const duration = (endTime - startTime) / 1000; // seconds
+    const bitsLoaded = 25000000 * 8;
+    const downloadMbps = (bitsLoaded / duration / 1024 / 1024).toFixed(2);
+
+    downloadEl.textContent = downloadMbps;
+
+    /* ---------- UPLOAD TEST ---------- */
+    const uploadData = new Uint8Array(5000000); // ~5MB
+    const uploadStart = performance.now();
+
+    await fetch("https://speed.cloudflare.com/__up", {
+        method: "POST",
+        body: uploadData
+    });
+
+    const uploadEnd = performance.now();
+    const uploadDuration = (uploadEnd - uploadStart) / 1000;
+    const uploadBits = 5000000 * 8;
+    const uploadMbps = (uploadBits / uploadDuration / 1024 / 1024).toFixed(2);
+
+    uploadEl.textContent = uploadMbps;
+
+    button.disabled = false;
+    button.textContent = "Run Speed Test Again";
+}
+    
     // --- Complaints ---
     async function handleComplaintSubmit(event) {
         event.preventDefault(); clearFormError();
@@ -940,21 +971,68 @@
         try { await apiRequest('/complaints', 'POST', { text }); form.reset(); await fetchAndDisplayComplaints(); }
         catch (err) { alert(`Failed: ${err.message}`); } finally { btn.disabled = false; btn.textContent = 'Submit Complaint'; }
     }
-
     async function fetchAndDisplayComplaints() {
-        const list = document.getElementById('complaintList'), countEl = document.getElementById('pending-complaints-count'); if (!list || !countEl) return;
-        list.innerHTML = `<p class="text-gray-500 text-xs italic p-2">Loading...</p>`;
-        try {
-            const data = await apiRequest('/complaints'); const complaints = data.complaints || []; list.innerHTML = '';
-            if (!complaints.length) list.innerHTML = `<p class="text-gray-500 text-xs italic p-2">No complaints filed.</p>`;
-            else { complaints.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); complaints.forEach(c => {
-                const item = document.createElement('div'); item.className='p-2.5 bg-white/60 rounded border border-gray-200/90 text-xs shadow-sm';
-                const date = new Date(c.created_at).toLocaleString('en-IN', {day:'numeric', month:'short', year:'2-digit', hour:'numeric', minute:'2-digit', hour12:true});
-                const statusColor = c.status==='Pending' ? 'text-yellow-600' : 'text-green-600';
-                item.innerHTML = `<p class="text-gray-800 mb-1.5 break-words leading-snug">${c.text}</p><div class="flex justify-between items-center text-gray-500 pt-1 border-t border-gray-200/70"><span class="text-[10px]">${date}</span><span class="font-semibold text-[11px] ${statusColor}">${c.status}</span></div>`; list.appendChild(item); }); }
-            countEl.textContent = complaints.filter(c => c.status === 'Pending').length;
-        } catch (err) { list.innerHTML = `<p class="text-red-500 text-xs p-2">Error loading: ${err.message}</p>`; countEl.textContent='!'; }
+    const list = document.getElementById('complaintList');
+    const countEl = document.getElementById('pending-complaints-count');
+    if (!list || !countEl) return;
+
+    list.innerHTML = `<p class="text-gray-500 text-xs italic p-2">Loading...</p>`;
+
+    try {
+        const data = await apiRequest('/complaints');
+        const complaints = data.complaints || [];
+
+        list.innerHTML = '';
+
+        if (!complaints.length) {
+            list.innerHTML = `<p class="text-gray-500 text-xs italic p-2">No complaints filed.</p>`;
+        } else {
+            complaints.sort(
+                (a, b) => new Date(b.complaint_date) - new Date(a.complaint_date)
+            );
+
+            complaints.forEach(c => {
+                const item = document.createElement('div');
+                item.className = 'p-2.5 bg-white/60 rounded border border-gray-200/90 text-xs shadow-sm';
+
+                const date = new Date(c.complaint_date).toLocaleString('en-IN', {
+                    timeZone: 'Asia/Kolkata',
+                    day: 'numeric',
+                    month: 'short',
+                    year: '2-digit',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                });
+
+                const statusColor = c.status === 'Pending'
+                    ? 'text-yellow-600'
+                    : 'text-green-600';
+
+                item.innerHTML = `
+                    <p class="text-gray-800 mb-1.5 break-words leading-snug">
+                        ${c.description}
+                    </p>
+                    <div class="flex justify-between items-center text-gray-500 pt-1 border-t border-gray-200/70">
+                        <span class="text-[10px]">${date}</span>
+                        <span class="font-semibold text-[11px] ${statusColor}">
+                            ${c.status}
+                        </span>
+                    </div>
+                `;
+
+                list.appendChild(item);
+            });
+        }
+
+        countEl.textContent = complaints.filter(c => c.status === 'Pending').length;
+
+    } catch (err) {
+        list.innerHTML = `<p class="text-red-500 text-xs p-2">Error loading complaints</p>`;
+        countEl.textContent = '!';
     }
+}
+
     // --- End Complaints ---
 
     // --- Chatbot ---
